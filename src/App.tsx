@@ -1,7 +1,11 @@
-import SignUp from './components/sign-up';
+import Mvp from './pages/mvp';
 
 function App() {
-  return <SignUp />;
+  return (
+    <>
+      <Mvp />
+    </>
+  );
 }
 
 export default App;
