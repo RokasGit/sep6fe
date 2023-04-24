@@ -11,13 +11,12 @@ import {
   useColorModeValue,
   createIcon,
   Input,
-  Image,
-  Center,
-  Tag,
 } from '@chakra-ui/react';
 
 import { Movie } from '../types/movie';
 import { getMovieByTitle } from '../requests/movie.requests';
+
+import MovieCard from '../components/movie-card';
 
 const Mvp = () => {
   const [movieTitle, setMovieTitle] = useState('');
@@ -52,7 +51,7 @@ const Mvp = () => {
           as={Box}
           textAlign={'center'}
           spacing={{ base: 8, md: 14 }}
-          py={{ base: 20, md: 36 }}>
+          py={{ base: 16, md: 30 }}>
           <Heading
             fontWeight={600}
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
@@ -106,29 +105,7 @@ const Mvp = () => {
               </Text>
             </Box>
           </Stack>
-          {movie && (
-            <Stack spacing="4">
-              <Heading as="h2" size="lg">
-                {movie.Title}
-              </Heading>
-              <Stack direction="row" justifyContent="center">
-                {movie.Actors &&
-                  movie.Actors.split(',').map((actor) => (
-                    <Tag key={actor} size="md" colorScheme="green">
-                      {actor}
-                    </Tag>
-                  ))}
-              </Stack>
-              <Center>
-                <Image
-                  src={movie.Poster}
-                  alt={`${movie.Title} poster`}
-                  w={300}
-                />
-              </Center>
-              <Text>{movie.Plot}</Text>
-            </Stack>
-          )}
+          <Box>{movie && <MovieCard movie={movie} />}</Box>
         </Stack>
       </Container>
     </>
