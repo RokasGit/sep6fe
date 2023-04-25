@@ -29,7 +29,7 @@ docker-compose build
 
 ### first start of the container.
 
-docker-compose up
+docker run -d --rm -p 5173:5173 --name best-movies-app-1 best-movies-app
 
 ### After that if the computer was turned off just do
 
