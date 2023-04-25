@@ -1,0 +1,21 @@
+version: '1'
+services:
+  app:
+    image: best-movies-app
+    build: .
+    networks:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/opt/app
+
+  # web-cli:
+  #   image: best-movies-app
+  #   networks:
+  #     - backend
+  #   command: sh
+
+networks:
+  backend:
+    driver: bridge
