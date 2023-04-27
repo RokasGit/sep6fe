@@ -22,7 +22,7 @@ type MovieCardProps = {
   movie: Movie;
 };
 
-const TEMP_USER_ID = 69;
+const TEMP_USER_ID = 1;
 
 const MovieCard: FC<MovieCardProps> = ({ movie }) => {
   const [isLoading, setIsLoading] = useState(false);
