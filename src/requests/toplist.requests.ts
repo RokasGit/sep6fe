@@ -7,12 +7,11 @@ export const addMovieToToplist = async (
   userId: number
 ): Promise<void> => {
   try {
-    const response = await fetch(`${API_URL}/${userId}/${movie}`, {
+    const response = await fetch(`${API_URL}/${userId}/${movie.ID}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(movie),
     });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
