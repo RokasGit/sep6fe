@@ -14,17 +14,13 @@ import {
 } from '@chakra-ui/react';
 
 import { Movie } from '../types/movie';
-import { Actor } from '../types/actor';
 import { getMovieByTitle } from '../requests/movie.requests';
 
 import MovieCard from '../components/movie-card';
-import { MovieStatList } from '../components/actor-stat';
-import { getActorByName} from '../requests/actor.requests';
 
 const Mvp = () => {
   const [movieTitle, setMovieTitle] = useState('');
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [actors, setActor] = useState<Actor[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,23 +43,6 @@ const Mvp = () => {
     setMovieTitle('');
     setIsLoading(false);
   };
-
-  const handleSearchActor = async () => {
-    setIsLoading(true);
-
-    try {
-      const actors: Actor[] = await getActorByName("Tom Holland");
-      setActor(actors);
-    } catch (error) {
-      console.log(error);
-    }
-
-    setIsLoading(false);
-  }
-
-  useEffect(() => {
-    handleSearchActor();
-  }, []);
 
   return (
     <>
@@ -127,7 +106,6 @@ const Mvp = () => {
             </Box>
           </Stack>
           <Box>{movie && <MovieCard movie={movie} />}</Box>
-          {/* <Box>{actors && <MovieStatList cardsData={actors}/>}</Box> */} //uncoment to check actor list component
         </Stack>
       </Container>
     </>
