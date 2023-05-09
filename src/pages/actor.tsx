@@ -111,10 +111,10 @@ const Mvp = () => {
                             justifyContent: 'center'
                         }}
                     >
-                        {actors && (
+                        {actors && actors.length > 0 && (
                             actors.length > 1
                                 ? <MovieStatList cardsData={actors} />
-                                : <MovieStat actor={actors[0]} spacing={4}/>
+                                : <MovieStat actor={actors[0]} spacing={4} />
                         )}
                     </Box>
                 </Stack>
