@@ -7,7 +7,7 @@ export const addMovieToToplist = async (
   userId: number
 ): Promise<void> => {
   try {
-    const response = await fetch(`${API_URL}/${userId}`, {
+    const response = await fetch(`${API_URL}/${userId}/${movie}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,3 +23,14 @@ export const addMovieToToplist = async (
     console.error(`Error: ${error}`);
   }
 };
+
+export const getToplist = async (userId: number): Promise<Movie[]> => {
+  return await fetch(`${API_URL}/${userId}`)
+    .then((response) => response.json())
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      throw Error(err);
+    });
+}

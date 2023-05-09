@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, ReactNode, FC } from 'react';
 
 import {
   Box,
@@ -15,6 +15,7 @@ import {
 
 import { Movie } from '../types/movie';
 import { getMovieByTitle } from '../requests/movie.requests';
+import Navbar from '../components/navbar';
 
 import MovieCard from '../components/movie-card';
 
