@@ -49,17 +49,9 @@ const Mvp = () => {
                 <Stack
                     as={Box}
                     textAlign={'center'}
-                    spacing={{ base: 8, md: 14 }}
+                    spacing={{ base: 8, md: 3 }}
                     py={{ base: 16, md: 30 }}>
-                    <Heading
-                        fontWeight={600}
-                        fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-                        lineHeight={'110%'}>
-                        This is the SEP6 <br />
-                        <Text as={'span'} color={'green.400'}>
-                            MVP
-                        </Text>
-                    </Heading>
+                    <Heading fontSize={30}>Search for Actors</Heading>
                     <Stack
                         direction={'column'}
                         spacing={3}
