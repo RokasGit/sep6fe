@@ -1,9 +1,10 @@
 import { Actor } from '../types/actor';
+import { API_URL } from '../../external/index';
 
-const API_URL = 'http://localhost:3000/bestmovies/v1/actors';
+const ACTOR_URL = API_URL + '/actors';
 
 export const getActorByName = async (name: string): Promise<Actor[]> => {
-  return await fetch(`${API_URL}/${name}`)
+  return await fetch(`${ACTOR_URL}/${name}`)
     .then((response) => response.json())
     .then((res) => {
       return res.data;

@@ -18,7 +18,7 @@ import { Actor } from '../types/actor';
 import { getMovieByTitle } from '../requests/movie.requests';
 
 import MovieCard from '../components/movie-card';
-import { MovieStatList } from '../components/movie-stat';
+import { MovieStatList } from '../components/actor-stat';
 import { getActorByName} from '../requests/actor.requests';
 
 const Mvp = () => {

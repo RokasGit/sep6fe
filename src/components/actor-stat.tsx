@@ -19,12 +19,12 @@ import {
 
 import { Actor } from '../types/actor';
 
-type MovieCardProps = {
+type ActorCardProps = {
     actor: Actor;
     spacing?: number;
 };
 
-const MovieStat: FC<MovieCardProps> = ({ actor, spacing }) => {
+const MovieStat: FC<ActorCardProps> = ({ actor, spacing }) => {
 
     return (
         <Card maxW="sm" mx="auto" p={1} mb={spacing}>
