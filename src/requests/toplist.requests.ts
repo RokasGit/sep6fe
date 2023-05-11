@@ -7,11 +7,12 @@ export const addMovieToToplist = async (
   userId: number
 ): Promise<void> => {
   try {
-    const response = await fetch(`${API_URL}/${userId}/${movie.ID}`, {
+    const response = await fetch(`${API_URL}/${userId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify(movie),
     });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -24,12 +25,21 @@ export const addMovieToToplist = async (
 };
 
 export const getToplist = async (userId: number): Promise<Movie[]> => {
-  return await fetch(`${API_URL}/${userId}`)
-    .then((response) => response.json())
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      throw Error(err);
-    });
+    try{
+      const response = await fetch(`${API_URL}/${userId}}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Pepe retrieved toplist", data);
+      return data;
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    return [];
+  }
 }
