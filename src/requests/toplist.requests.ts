@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:3000/bestmovies/v1/toplists';
 export const addMovieToToplist = async (
   movie: Movie,
   userId: number
-): Promise<void> => {
+  ): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/${userId}`, {
       method: 'POST',
@@ -36,8 +36,7 @@ export const getToplist = async (userId: number): Promise<Movie[]> => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log("Pepe retrieved toplist", data);
-      return data;
+      return data.data;
   } catch (error) {
     console.error(`Error: ${error}`);
     return [];
