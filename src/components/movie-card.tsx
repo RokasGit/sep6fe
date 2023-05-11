@@ -10,9 +10,10 @@ import {
   Tag,
   Heading,
   Button,
+  Container,
 } from '@chakra-ui/react';
 
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, StarIcon } from '@chakra-ui/icons';
 
 import { Movie } from '../types/movie';
 
@@ -39,39 +40,94 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
       });
   };
 
+  // destructure props of movie
+  const {
+    Title,
+    Year,
+    Type,
+    Language,
+    Genre,
+    Poster,
+    Director,
+    Actors,
+    Plot,
+    imdbRating,
+    imdbVotes,
+  } = movie;
+
   return (
-    <Card maxW="sm" mx={'auto'}>
-      <CardBody display={'flex'} flexDirection={'column'} alignItems={'center'}>
-        <Image
-          src={movie.Poster}
-          alt={`${movie.Title} poster`}
-          w={200}
-          borderRadius="lg"
-        />
-        <Stack mt="6" spacing="3">
-          <Heading size="md">{movie.Title}</Heading>
-          <Stack direction="row" justifyContent="center">
-            {movie.Actors &&
-              movie.Actors.split(',').map((actor) => (
-                <Tag key={actor} size="md" colorScheme="green">
-                  {actor}
-                </Tag>
-              ))}
+    <Card maxW="2xl" mx={'auto'}>
+      <CardBody>
+        <Heading
+          size="md"
+          mb={8}
+          display={'flex'}
+          flexDir={'column'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          gap={3}>
+          <Text>
+            {Title} ({Year})
+          </Text>
+          <Container display={'flex'} gap={2} justifyContent={'center'}>
+            <Tag size={'md'} colorScheme="gray" justifySelf={'flex-start'}>
+              {Type.charAt(0).toUpperCase() + Type.slice(1)}
+            </Tag>
+            <Tag size={'md'} colorScheme="purple" justifySelf={'flex-start'}>
+              {Language}
+            </Tag>
+            <Tag size={'md'} colorScheme="orange" justifySelf={'flex-start'}>
+              {Genre}
+            </Tag>
+          </Container>
+        </Heading>
+        <Container
+          display={'flex'}
+          flexDirection={'row'}
+          justifyContent={'center'}>
+          <Container flex={2}>
+            <Image
+              src={Poster}
+              alt={`${Title} poster`}
+              width={'100%'}
+              borderRadius="lg"
+            />
+          </Container>
+          <Stack spacing="3" flex={4}>
+            <Stack direction="row" justifyContent="center">
+              <Tag size={'md'} colorScheme="blue">
+                {Director}
+              </Tag>
+              {Actors &&
+                Actors.split(',').map((actor) => (
+                  <Tag key={actor} size="md" colorScheme="green">
+                    {actor}
+                  </Tag>
+                ))}
+            </Stack>
+            <Text>{Plot}</Text>
+            <Container
+              display={'flex'}
+              alignItems={'center'}
+              justifyContent={'center'}
+              gap={2}>
+              <StarIcon />
+              <Text>
+                {imdbRating} {`(${imdbVotes} votes)`}
+              </Text>
+            </Container>
+            <Button
+              variant="ghost"
+              colorScheme="green"
+              leftIcon={<AddIcon />}
+              mx={'auto'}
+              onClick={handleAddToToplist}
+              isLoading={isLoading}>
+              Add to toplist
+            </Button>
           </Stack>
-          <Text>{movie.Plot}</Text>
-        </Stack>
+        </Container>
       </CardBody>
-      <CardFooter>
-        <Button
-          variant="ghost"
-          colorScheme="green"
-          leftIcon={<AddIcon />}
-          mx={'auto'}
-          onClick={handleAddToToplist}
-          isLoading={isLoading}>
-          Add to toplist
-        </Button>
-      </CardFooter>
     </Card>
   );
 };
