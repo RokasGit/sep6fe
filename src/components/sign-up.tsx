@@ -41,16 +41,13 @@ const SignUp = () => {
           boxShadow={'lg'}
           p={8}>
           <Stack spacing={4}>
+            <Text id="information" color={'red.500'} fontSize={'sm'}>
+              {''}
+            </Text>
             <HStack>
               <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName">
-                  <FormLabel>Last Name</FormLabel>
+                <FormControl id="username" isRequired>
+                  <FormLabel>Username</FormLabel>
                   <Input type="text" />
                 </FormControl>
               </Box>
@@ -75,6 +72,11 @@ const SignUp = () => {
               </InputGroup>
             </FormControl>
             <Stack spacing={10} pt={2}>
+              <Text fontSize={'sm'} color={'gray.600'}>
+                By signing up, you agree to our{' '}
+                <Link color={'blue.400'}>Terms of Service</Link> and{' '}
+                <Link color={'blue.400'}>Privacy Policy</Link>
+              </Text>
               <Button
                 loadingText="Submitting"
                 size="lg"
