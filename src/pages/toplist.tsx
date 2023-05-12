@@ -11,9 +11,14 @@ import {
     useTheme,
 } from '@chakra-ui/react';
 
-const Toplist = () => {
+interface ToplistProps {
+  moviess?: Movie[];
+  setMovies?: React.Dispatch<React.SetStateAction<Movie[]>>;
+}
+
+const Toplist = ({ moviess }: ToplistProps) => {
     const[movies, setMovies] = useState<Movie[]>();
-    const [loading, setLoading] = useState(true);
+    const[loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +27,12 @@ const Toplist = () => {
         }
         fetchData();
     }, []);
+
+    useEffect(() => {
+      if(moviess){
+        setMovies(moviess);
+      }
+  }, []);
 
     const theme = useTheme();
     const scrollbarWidth = theme.space[2];
