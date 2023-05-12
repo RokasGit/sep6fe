@@ -41,7 +41,6 @@ export const deleteMovieFromToplist = async (
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    Toplist(data);
     console.log("Received new data", data);
   } catch (error) {
     console.error(`Error: ${error}`);

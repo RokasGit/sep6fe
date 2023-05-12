@@ -1,4 +1,5 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
+import { ToplistContext } from '../context/toplist.context';
 
 import {
   Button, 
@@ -26,9 +27,12 @@ const TEMP_USER_ID = 1;
 const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
     const [isLoading, setIsLoading] = useState(false);
 
+    const { removeMovie } = useContext(ToplistContext);
+
     const handleDeleteFromToplist = () => {
       setIsLoading(true);
       deleteMovieFromToplist(movie, TEMP_USER_ID).then(()=> {
+        removeMovie(movie);
         setIsLoading(false);
       }).catch((error) => {
         console.log(error);

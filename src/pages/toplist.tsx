@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { getToplist } from "../requests/toplist.requests"
 import { Movie } from "../types/movie";
 import  ToplistMovieCard  from "../components/toplist-movie-card"
+import { ToplistContext } from '../context/toplist.context';
 
 import {
     Flex,
@@ -11,14 +12,11 @@ import {
     useTheme,
 } from '@chakra-ui/react';
 
-interface ToplistProps {
-  moviess?: Movie[];
-  setMovies?: React.Dispatch<React.SetStateAction<Movie[]>>;
-}
-
-const Toplist = ({ moviess }: ToplistProps) => {
-    const[movies, setMovies] = useState<Movie[]>();
+const Toplist = () => {
+    //const[movies, setMovies] = useState<Movie[]>();
     const[loading, setLoading] = useState(true);
+
+    const { movies, setMovies } = useContext(ToplistContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,12 +25,6 @@ const Toplist = ({ moviess }: ToplistProps) => {
         }
         fetchData();
     }, []);
-
-    useEffect(() => {
-      if(moviess){
-        setMovies(moviess);
-      }
-  }, []);
 
     const theme = useTheme();
     const scrollbarWidth = theme.space[2];
