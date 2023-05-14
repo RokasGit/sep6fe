@@ -6,7 +6,7 @@ export const getMovieByTitle = async (title: string): Promise<Movie> => {
   return await fetch(`${API_URL}/${title}`)
     .then((response) => response.json())
     .then((res) => {
-      return res.data;
+      return res;
     })
     .catch((err) => {
       throw Error(err);
