@@ -17,6 +17,10 @@ import { AddIcon, StarIcon } from '@chakra-ui/icons';
 
 import { Movie } from '../types/movie';
 
+import RateMovie from '../components/review-popUp'
+
+import { UserContext } from '../context/user.context';
+
 import { addMovieToToplist } from '../requests/toplist.requests';
 
 type MovieCardProps = {
@@ -125,6 +129,7 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
               isLoading={isLoading}>
               Add to toplist
             </Button>
+            <RateMovie userId={TEMP_USER_ID} movie={movie}/>
           </Stack>
         </Container>
       </CardBody>
