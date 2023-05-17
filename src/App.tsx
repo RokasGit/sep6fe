@@ -7,6 +7,7 @@ import Register from './pages/register';
 import Toplist from './pages/toplist';
 import Navbar from './components/navbar';
 import Login from './pages/login';
+import MoviePage from './pages/movie';
 
 function App() {
   const { setUser } = useContext(UserContext);
@@ -26,6 +27,7 @@ function App() {
         <Route path="/toplist" element={<Toplist />}></Route>
         <Route path="/actors" element={<ActorPage />}></Route>
         <Route path="/watchlist" element={<Toplist />}></Route>
+        <Route path="/movie" element={<MoviePage />}></Route>
       </Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/login" element={<Login />}></Route>

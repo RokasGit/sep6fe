@@ -13,7 +13,7 @@ import {
 
 const Toplist = () => {
     const[movies, setMovies] = useState<Movie[]>();
-    const [loading, setLoading] = useState(true);
+    const[loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
