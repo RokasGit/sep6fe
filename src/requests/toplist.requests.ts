@@ -1,7 +1,7 @@
 import { Movie } from '../types/movie';
 import Toplist  from '../pages/toplist';
 
-const API_URL = 'http://localhost:3000/bestmovies/v1/toplists';
+const API_URL = "http://localhost:3000/bestmovies/v1/toplists";
 
 export const addMovieToToplist = async (
   movie: Movie,
@@ -9,9 +9,9 @@ export const addMovieToToplist = async (
   ): Promise<boolean> => {
   try {
     const response = await fetch(`${API_URL}/${userId}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(movie),
     });
@@ -48,18 +48,18 @@ export const deleteMovieFromToplist = async (
 };
 
 export const getToplist = async (userId: number): Promise<Movie[]> => {
-    try{
-      const response = await fetch(`${API_URL}/${userId}}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data.data;
+  try {
+    const response = await fetch(`${API_URL}/${userId}}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.data;
   } catch (error) {
     console.error(`Error: ${error}`);
     return [];

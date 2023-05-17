@@ -1,6 +1,7 @@
-import { User } from '../types/user';
+import { User } from "../types/user";
+import { Toplist } from "../types/toplist";
 
-const API_URL = 'http://localhost:3000/bestmovies/v1/users';
+const API_URL = "http://localhost:3000/bestmovies/v1/users";
 
 export default class UserRequests {
   static async registerUser(
@@ -15,9 +16,9 @@ export default class UserRequests {
         password: password,
       };
       const response = await fetch(`${API_URL}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
 
         body: JSON.stringify(user),
@@ -40,12 +41,32 @@ export default class UserRequests {
         password: password,
       };
       const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
 
         body: JSON.stringify(user),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data);
+      }
+
+      return data;
+    } catch (error: any) {
+      throw Error(error.message);
+    }
+  }
+  static async getUserProfile(
+    id: number
+  ): Promise<{ user: User; toplist: Toplist }> {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       const data = await response.json();
       if (!response.ok) {

@@ -7,6 +7,7 @@ import Register from './pages/register';
 import Toplist from './pages/toplist';
 import Navbar from './components/navbar';
 import Login from './pages/login';
+import Profile from './pages/profile';
 import MoviePage from './pages/movie';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       </Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/profile/:id" element={<Profile />}></Route>
       </Routes>
     </>
   );
