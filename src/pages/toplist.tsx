@@ -17,7 +17,6 @@ const Toplist = () => {
     const location =  useLocation();
     const state = location.state;
 
-    const[movies, setMovies] = useState<Movie[]>();
     const[loading, setLoading] = useState(true);
 
     const { movies, setMovies } = useContext(ToplistContext);
