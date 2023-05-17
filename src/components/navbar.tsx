@@ -47,7 +47,9 @@ const Navbar = () => {
             display={{ md: 'none' }}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Box>Logo</Box>
+            <NavLink
+            onClick={() => {navigate('/')}}
+            >Home</NavLink>
             <HStack
               as={'nav'}
               spacing={4}

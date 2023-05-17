@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 const Toplist = () => {
-    //const[movies, setMovies] = useState<Movie[]>();
+    const[movies, setMovies] = useState<Movie[]>();
     const[loading, setLoading] = useState(true);
 
     const { movies, setMovies } = useContext(ToplistContext);
