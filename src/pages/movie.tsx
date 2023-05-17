@@ -16,6 +16,7 @@ import { useLocation } from 'react-router-dom';
 import { getMovieById } from '../requests/movie.requests';
 import { AddIcon, StarIcon, CheckIcon } from '@chakra-ui/icons';
 import { addMovieToToplist } from '../requests/toplist.requests';
+import { addMovieToWatchlist } from '../requests/watchlist.requests';
 
 const TEMP_USER_ID = 1;
 
@@ -54,7 +55,7 @@ const MoviePage = () => {
   
     const handleAddToWatchlist = () => {
       setLoading(true);
-      addMovieToToplist(movie, TEMP_USER_ID)
+      addMovieToWatchlist(movie, TEMP_USER_ID)
         .then(() => {
           setInWatchlist(true);
           setLoading(false);

@@ -21,6 +21,8 @@ import { Movie } from '../types/movie';
 
 import { addMovieToToplist } from '../requests/toplist.requests';
 
+import { addMovieToWatchlist } from '../requests/watchlist.requests';
+
 type MovieCardProps = {
   movie: Movie;
 };
@@ -34,6 +36,7 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
 
   useEffect(() => {
     setInToplist(movie.BelongsToToplist);
+    setInWatchlist(movie.BelongsToWatchlist)
   },[]);
 
 
@@ -52,7 +55,7 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
 
   const handleAddToWatchlist = () => {
     setIsLoading(true);
-    addMovieToToplist(movie, TEMP_USER_ID)
+    addMovieToWatchlist(movie, TEMP_USER_ID)
       .then(() => {
         setInWatchlist(true);
         setIsLoading(false);

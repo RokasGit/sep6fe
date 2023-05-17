@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { getToplist } from "../requests/toplist.requests"
-import  ToplistMovieCard  from "../components/toplist-movie-card"
+import { getWatchlist } from "../requests/watchlist.requests"
+import  WatchlistMovieCard  from "../components/watchlist-movie-card"
 import { useLocation } from "react-router-dom";
-import { ToplistContext } from '../context/toplist.context';
+import { WatchlistContext } from '../context/watchlist.context';
 
 import {
     Flex,
@@ -12,13 +12,13 @@ import {
     useTheme,
 } from '@chakra-ui/react';
 
-const Toplist = () => {
+const Watchlist = () => {
     const location =  useLocation();
     const state = location.state;
 
     const[loading, setLoading] = useState(true);
 
-    const { movies, setMovies } = useContext(ToplistContext);
+    const { movies, setMovies } = useContext(WatchlistContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,7 +29,7 @@ const Toplist = () => {
             return;
           }
           // if we are coming from the home page (MVP), we fetch the movies from the API
-            setMovies(await getToplist(1));
+            setMovies(await getWatchlist(1));
             setLoading(false);
         }
         fetchData();
@@ -46,7 +46,7 @@ const Toplist = () => {
           <Flex direction="column" overflowY="hidden">
             <SimpleGrid columns={[1, 2, 3]} spacing={10}>
               {movies && movies.map((movie) => (
-                <ToplistMovieCard key={movie.imdbID} movie={movie} />
+                <WatchlistMovieCard key={movie.imdbID} movie={movie} />
               ))}
             </SimpleGrid>
           </Flex>
@@ -55,4 +55,4 @@ const Toplist = () => {
     ) 
 }  
 
-export default Toplist;
+export default Watchlist;
