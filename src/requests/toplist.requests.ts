@@ -58,7 +58,6 @@ export const getToplist = async (userId: number): Promise<Movie[]> => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    console.log("Pepe toplist", data);
     return data.data;
   } catch (error) {
     console.error(`Error: ${error}`);
