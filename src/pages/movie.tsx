@@ -33,7 +33,7 @@ const MoviePage = () => {
       const fetchData = async () => {
           setLoading(true);
           const stateData = location.state;
-          const movieDetails = await getMovieById(stateData, user?.user_id);
+          const movieDetails = await getMovieById(stateData, user?.userId);
           setMovie(movieDetails);
           setInToplist(movieDetails.BelongsToToplist);
           setInWatchlist(movieDetails.BelongsToWatchlist);
@@ -44,7 +44,7 @@ const MoviePage = () => {
 
     const handleAddToToplist = () => {
       setLoading(true);
-      addMovieToToplist(movie, user?.user_id)
+      addMovieToToplist(movie, user?.userId)
         .then(() => {
           setInToplist(true);
           setLoading(false);
@@ -57,7 +57,7 @@ const MoviePage = () => {
   
     const handleAddToWatchlist = () => {
       setLoading(true);
-      addMovieToWatchlist(movie, user?.user_id)
+      addMovieToWatchlist(movie, user?.userId)
         .then(() => {
           setInWatchlist(true);
           setLoading(false);
@@ -181,7 +181,7 @@ const MoviePage = () => {
                   </>
                 ) : null}
               </Stack>
-              { movie ? <RateMovie userId={TEMP_USER_ID} movie={movie}/> : null}
+              { movie && user ? <RateMovie userId={user?.userId || 0} movie={movie}/> : null}
             </Stack>
           </Container>
         </CardBody>

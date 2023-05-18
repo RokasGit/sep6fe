@@ -1,6 +1,6 @@
-import { Box, Button, FormControl, FormLabel, Card, Flex, CardBody, Stack, Heading, Text, Textarea, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, IconButton } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Card, Flex, CardBody, Stack, Heading, Text, Textarea, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, IconButton, Center } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { addReview } from '../requests/review.requests';
 import { Review } from "../types/review";
 import { Movie } from "../types/movie";
@@ -11,12 +11,12 @@ type RateMovieProps = {
   userId: number;
 };
 
-const ReviewCard = ({ review }: { review: Review }) => {
+export const ReviewCard = ({ review }: { review: Review }) => {
 
   return (
     <Box borderWidth={1} borderRadius="lg" overflow="hidden" p={4} boxShadow="sm">
-    <Heading size="md" mb={2}>Review for {review.movieName}</Heading>
-    <Box display="flex" mb={3}>
+    <Heading size="md" mb={2}>{review.movieName}</Heading>
+    <Box display="flex" mb={3} alignContent={'center'} justifyContent={'center'}>
       {[1, 2, 3, 4, 5].map((starIndex) => (
         <StarIcon
           key={starIndex}
@@ -39,6 +39,14 @@ const RateMovie: React.FC<RateMovieProps> = ({ movie, userId }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [review, setReview] = useState<Review | null>(null);
+
+  
+  useEffect(() => {
+    console.log(movie.review);
+    if(movie.review){
+      setReview(movie.review);
+    }
+  }, []);
 
   const handleSubmit = async () => {
 
@@ -66,7 +74,7 @@ const RateMovie: React.FC<RateMovieProps> = ({ movie, userId }) => {
     setComment(event.target.value);
   };
 
-  if (status === "OK" && review !== null) {
+  if (review !== null) {
     return <ReviewCard review={review} />;
   }
 
