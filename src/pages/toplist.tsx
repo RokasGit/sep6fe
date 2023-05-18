@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { getToplist } from "../requests/toplist.requests"
 import { Movie } from "../types/movie";
 import  ToplistMovieCard  from "../components/toplist-movie-card"
+import { useLocation } from "react-router-dom";
+import { ToplistContext } from '../context/toplist.context';
 
 import {
     Flex,
@@ -12,11 +14,22 @@ import {
 } from '@chakra-ui/react';
 
 const Toplist = () => {
-    const[movies, setMovies] = useState<Movie[]>();
-    const [loading, setLoading] = useState(true);
+    const location =  useLocation();
+    const state = location.state;
+
+    const[loading, setLoading] = useState(true);
+
+    const { movies, setMovies } = useContext(ToplistContext);
 
     useEffect(() => {
         const fetchData = async () => {
+          // state movies is undefined if we are not coming from the home page (MVP)
+          if (state && state.movies) {
+            setMovies(state.movies);
+            setLoading(false);
+            return;
+          }
+          // if we are coming from the home page (MVP), we fetch the movies from the API
             setMovies(await getToplist(1));
             setLoading(false);
         }

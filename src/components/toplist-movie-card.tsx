@@ -1,21 +1,44 @@
-import React, { FC } from 'react';
-import { Movie } from "../types/movie";
+import React, { FC, useContext, useState } from 'react';
+import { ToplistContext } from '../context/toplist.context';
 
 import {
-    Card,
-    CardBody,
-    Text,
-    Stack,
-    Tag,
-    Heading,
-    Image,
+  Button, 
+  Card,
+  CardBody,
+  Text,
+  Stack,
+  Tag,
+  Heading,
+  Image,
 } from '@chakra-ui/react';
+
+import { AddIcon, StarIcon } from '@chakra-ui/icons';
+
+import { Movie } from "../types/movie";
+
+import { deleteMovieFromToplist } from '../requests/toplist.requests';
 
 type ToplistMovieCardProps = {
     movie: Movie;
   };
 
+const TEMP_USER_ID = 1;
+
 const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { removeMovie } = useContext(ToplistContext);
+
+    const handleDeleteFromToplist = () => {
+      setIsLoading(true);
+      deleteMovieFromToplist(movie, TEMP_USER_ID).then(()=> {
+        removeMovie(movie);
+        setIsLoading(false);
+      }).catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      })
+    }
     
     return (
       <Card maxW="sm" mx={'auto'}>
@@ -37,6 +60,15 @@ const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
                 ))}
             </Stack>
             <Text>{movie.Plot}</Text>
+            <Button
+              variant="ghost"
+              colorScheme="green"
+              leftIcon={<AddIcon />}
+              mx={'auto'}
+              onClick={handleDeleteFromToplist}
+              isLoading={isLoading}>
+              Delete from toplist
+            </Button>
           </Stack>
         </CardBody>
       </Card>

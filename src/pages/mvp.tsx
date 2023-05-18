@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, ReactNode, FC } from 'react';
+import { useState, ChangeEvent } from 'react';
 
 import {
   Box,
@@ -11,17 +11,23 @@ import {
   useColorModeValue,
   createIcon,
   Input,
+  Center,
+  Flex,
+  SimpleGrid,
+  Spinner,
+  useTheme
 } from '@chakra-ui/react';
 
 import { Movie } from '../types/movie';
-import { getMovieByTitle } from '../requests/movie.requests';
-import Navbar from '../components/navbar';
+import { getMoviesByTitle } from '../requests/movie.requests';
 
 import MovieCard from '../components/movie-card';
 
+const TEMP_USER_ID = 1;
+
 const Mvp = () => {
   const [movieTitle, setMovieTitle] = useState('');
-  const [movie, setMovie] = useState<Movie | null>(null);
+  const [movies, setMovies] = useState<Movie[] | null>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,9 +40,8 @@ const Mvp = () => {
     setIsLoading(true);
 
     try {
-      const movie: Movie = await getMovieByTitle(movieTitle);
-      console.log(movie);
-      setMovie(movie);
+      const movies: Movie[] = await getMoviesByTitle(movieTitle, TEMP_USER_ID);
+      setMovies(movies);
     } catch (error) {
       console.log(error);
     }
@@ -45,9 +50,12 @@ const Mvp = () => {
     setIsLoading(false);
   };
 
+  const theme = useTheme();
+  const scrollbarWidth = theme.space[2];
+
   return (
     <>
-      <Container maxW={'3xl'}>
+      <Container maxW={'10xl'}>
         <Stack
           as={Box}
           textAlign={'center'}
@@ -106,7 +114,16 @@ const Mvp = () => {
               </Text>
             </Box>
           </Stack>
-          <Box>{movie && <MovieCard movie={movie} />}</Box>
+          {movies && movies?.length > 0 ? <Center overflowY="hidden" h="55vh" sx={{ scrollbarWidth }}>
+            {isLoading ? (<Spinner size="xl" />) : (
+              <Flex direction="column" overflowY="scroll" h="inherit">
+                <SimpleGrid columns={[1, 2, 3]} spacing={10}>
+                  {movies.map((movie) => (
+                    <MovieCard key={movie.imdbID} movie={movie} />
+                  ))}
+                </SimpleGrid>
+              </Flex>
+            )}</Center> : <Box></Box>}
         </Stack>
       </Container>
     </>
