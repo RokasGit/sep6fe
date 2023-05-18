@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useContext } from 'react';
 
 import {
   Box,
@@ -22,13 +22,14 @@ import { Movie } from '../types/movie';
 import { getMoviesByTitle } from '../requests/movie.requests';
 
 import MovieCard from '../components/movie-card';
-
-const TEMP_USER_ID = 1;
+import { UserContext } from '../context/user.context';
 
 const Mvp = () => {
   const [movieTitle, setMovieTitle] = useState('');
   const [movies, setMovies] = useState<Movie[] | null>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const{ user } = useContext(UserContext);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMovieTitle(event.target.value);
@@ -40,7 +41,7 @@ const Mvp = () => {
     setIsLoading(true);
 
     try {
-      const movies: Movie[] = await getMoviesByTitle(movieTitle, TEMP_USER_ID);
+      const movies: Movie[] = await getMoviesByTitle(movieTitle, user?.user_id);
       setMovies(movies);
     } catch (error) {
       console.log(error);

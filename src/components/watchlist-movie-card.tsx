@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { WatchlistContext } from '../context/watchlist.context';
 
 import {
@@ -12,33 +12,56 @@ import {
   Image,
 } from '@chakra-ui/react';
 
-import { AddIcon, StarIcon } from '@chakra-ui/icons';
+import { AddIcon, CheckIcon, InfoIcon, MinusIcon, StarIcon } from '@chakra-ui/icons';
 
 import { Movie } from "../types/movie";
 
 import { deleteMovieFromWatchlist } from '../requests/watchlist.requests';
+import { UserContext } from '../context/user.context';
+import { addMovieToToplist } from '../requests/toplist.requests';
+import { useNavigate } from 'react-router-dom';
 
 type WatchlistMovieCardProps = {
     movie: Movie;
   };
 
-const TEMP_USER_ID = 1;
-
 const WatchlistMovieCard: FC<WatchlistMovieCardProps> = ({ movie }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [inToplist, setInToplist] = useState(false);
 
     const { removeMovie } = useContext(WatchlistContext);
 
+    const{ user } = useContext(UserContext);
+
+    useEffect(() =>{
+      setInToplist(movie.BelongsToToplist);
+    },[]);
+
     const handleDeleteFromWatchlist = () => {
       setIsLoading(true);
-      deleteMovieFromWatchlist(movie, TEMP_USER_ID).then(()=> {
+      deleteMovieFromWatchlist(movie, user?.user_id).then(()=> {
         removeMovie(movie);
         setIsLoading(false);
       }).catch((error) => {
         console.log(error);
         setIsLoading(false);
       })
-    }
+    };
+
+    const handleAddToToplist = () => {
+      setIsLoading(true);
+      addMovieToToplist(movie, user?.user_id)
+        .then(() => {
+          setInToplist(true);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoading(false);
+        });
+    };
+
+    const navigate = useNavigate();
     
     return (
       <Card maxW="sm" mx={'auto'}>
@@ -61,14 +84,46 @@ const WatchlistMovieCard: FC<WatchlistMovieCardProps> = ({ movie }) => {
             </Stack>
             <Text>{movie.Plot}</Text>
             <Button
+                variant="ghost"
+                colorScheme="green"
+                leftIcon={<InfoIcon />}
+                mx={'auto'}
+                onClick={()=> {
+                  navigate('/movie', {state: movie.imdbID});}}
+                isLoading={isLoading}>
+                See details
+              </Button>
+            <Button
               variant="ghost"
               colorScheme="green"
-              leftIcon={<AddIcon />}
+              leftIcon={<MinusIcon />}
               mx={'auto'}
               onClick={handleDeleteFromWatchlist}
               isLoading={isLoading}>
               Delete from watchlist
             </Button>
+            {inToplist ? (
+                      <Button
+                        variant="solid"
+                        colorScheme="green"
+                        leftIcon={<CheckIcon />}
+                        mx={'auto'}
+                        isLoading={isLoading}
+                      >
+                        Added to toplist
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        colorScheme="green"
+                        leftIcon={<AddIcon />}
+                        mx={'auto'}
+                        onClick={handleAddToToplist}
+                        isLoading={isLoading}
+                      >
+                        Add to toplist
+                      </Button>
+                    )}
           </Stack>
         </CardBody>
       </Card>

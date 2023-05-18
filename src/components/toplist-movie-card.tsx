@@ -1,5 +1,5 @@
-import React, { FC, useContext, useState } from 'react';
-import { ToplistContext } from '../context/toplist.context';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { WatchlistContext } from '../context/watchlist.context';
 
 import {
   Button, 
@@ -12,33 +12,56 @@ import {
   Image,
 } from '@chakra-ui/react';
 
-import { AddIcon, StarIcon } from '@chakra-ui/icons';
+import { AddIcon, CheckIcon, InfoIcon, MinusIcon, StarIcon } from '@chakra-ui/icons';
 
 import { Movie } from "../types/movie";
 
 import { deleteMovieFromToplist } from '../requests/toplist.requests';
+import { UserContext } from '../context/user.context';
+import { addMovieToWatchlist } from '../requests/watchlist.requests';
+import { useNavigate } from 'react-router-dom';
 
 type ToplistMovieCardProps = {
     movie: Movie;
   };
 
-const TEMP_USER_ID = 1;
-
 const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [inWatchlist, setInWatchlist] = useState(false);
 
-    const { removeMovie } = useContext(ToplistContext);
+    const { removeMovie } = useContext(WatchlistContext);
+
+    const{ user } = useContext(UserContext);
+
+    useEffect(() =>{
+      setInWatchlist(movie.BelongsToWatchlist);
+    },[]);
 
     const handleDeleteFromToplist = () => {
       setIsLoading(true);
-      deleteMovieFromToplist(movie, TEMP_USER_ID).then(()=> {
+      deleteMovieFromToplist(movie, user?.user_id).then(()=> {
         removeMovie(movie);
         setIsLoading(false);
       }).catch((error) => {
         console.log(error);
         setIsLoading(false);
       })
-    }
+    };
+
+    const handleAddToWatchlist = () => {
+      setIsLoading(true);
+      addMovieToWatchlist(movie, user?.user_id)
+        .then(() => {
+          setInWatchlist(true);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsLoading(false);
+        });
+    };
+
+    const navigate = useNavigate();
     
     return (
       <Card maxW="sm" mx={'auto'}>
@@ -61,14 +84,46 @@ const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
             </Stack>
             <Text>{movie.Plot}</Text>
             <Button
+                variant="ghost"
+                colorScheme="green"
+                leftIcon={<InfoIcon />}
+                mx={'auto'}
+                onClick={()=> {
+                  navigate('/movie', {state: movie.imdbID});}}
+                isLoading={isLoading}>
+                See details
+              </Button>
+            <Button
               variant="ghost"
               colorScheme="green"
-              leftIcon={<AddIcon />}
+              leftIcon={<MinusIcon />}
               mx={'auto'}
               onClick={handleDeleteFromToplist}
               isLoading={isLoading}>
               Delete from toplist
             </Button>
+            {inWatchlist ? (
+                      <Button
+                        variant="solid"
+                        colorScheme="green"
+                        leftIcon={<CheckIcon />}
+                        mx={'auto'}
+                        isLoading={isLoading}
+                      >
+                        Added to watchlist
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        colorScheme="green"
+                        leftIcon={<AddIcon />}
+                        mx={'auto'}
+                        onClick={handleAddToWatchlist}
+                        isLoading={isLoading}
+                      >
+                        Add to watchlist
+                      </Button>
+                    )}
           </Stack>
         </CardBody>
       </Card>

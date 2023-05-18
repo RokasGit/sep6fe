@@ -11,6 +11,7 @@ import {
     SimpleGrid,
     useTheme,
 } from '@chakra-ui/react';
+import { UserContext } from '../context/user.context';
 
 const Toplist = () => {
     const location =  useLocation();
@@ -19,6 +20,8 @@ const Toplist = () => {
     const[loading, setLoading] = useState(true);
 
     const { movies, setMovies } = useContext(ToplistContext);
+
+    const{ user } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,7 +32,7 @@ const Toplist = () => {
             return;
           }
           // if we are coming from the home page (MVP), we fetch the movies from the API
-            setMovies(await getToplist(1));
+            setMovies(await getToplist(user?.user_id));
             setLoading(false);
         }
         fetchData();
@@ -39,12 +42,12 @@ const Toplist = () => {
     const scrollbarWidth = theme.space[2];
     
     return (
-        <Center overflowY="scroll" h="92vh" paddingTop="30vh" sx={{ scrollbarWidth }}>
+        <Center overflowY="hidden" h="93vh" w="100vw" sx={{ scrollbarWidth }}>
         {loading ? (
           <Spinner size="xl" />
         ) : (
-          <Flex direction="column" overflowY="hidden">
-            <SimpleGrid columns={[1, 2, 3]} spacing={10}>
+           <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
+            <SimpleGrid columns={[1, 2, 3, 4]} spacing={10}>
               {movies && movies.map((movie) => (
                 <ToplistMovieCard key={movie.imdbID} movie={movie} />
               ))}
