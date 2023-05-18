@@ -19,6 +19,10 @@ import { AddIcon, InfoIcon, CheckIcon } from '@chakra-ui/icons';
 
 import { Movie } from '../types/movie';
 
+import RateMovie from '../components/review-popUp'
+
+import { UserContext } from '../context/user.context';
+
 import { addMovieToToplist } from '../requests/toplist.requests';
 
 type MovieCardProps = {
