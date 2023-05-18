@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { getToplist } from "../requests/toplist.requests"
-import  ToplistMovieCard  from "../components/toplist-movie-card"
+import { getWatchlist } from "../requests/watchlist.requests"
+import  WatchlistMovieCard  from "../components/watchlist-movie-card"
 import { useLocation } from "react-router-dom";
-import { ToplistContext } from '../context/toplist.context';
+import { WatchlistContext } from '../context/watchlist.context';
 
 import {
     Flex,
@@ -13,13 +13,13 @@ import {
 } from '@chakra-ui/react';
 import { UserContext } from '../context/user.context';
 
-const Toplist = () => {
+const Watchlist = () => {
     const location =  useLocation();
     const state = location.state;
 
     const[loading, setLoading] = useState(true);
 
-    const { movies, setMovies } = useContext(ToplistContext);
+    const { movies, setMovies } = useContext(WatchlistContext);
 
     const{ user } = useContext(UserContext);
 
@@ -32,7 +32,7 @@ const Toplist = () => {
             return;
           }
           // if we are coming from the home page (MVP), we fetch the movies from the API
-            setMovies(await getToplist(user?.user_id));
+            setMovies(await getWatchlist(user?.user_id));
             setLoading(false);
         }
         fetchData();
@@ -46,10 +46,10 @@ const Toplist = () => {
         {loading ? (
           <Spinner size="xl" />
         ) : (
-           <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
+          <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
             <SimpleGrid columns={[1, 2, 3, 4]} spacing={10}>
               {movies && movies.map((movie) => (
-                <ToplistMovieCard key={movie.imdbID} movie={movie} />
+                <WatchlistMovieCard key={movie.imdbID} movie={movie} />
               ))}
             </SimpleGrid>
           </Flex>
@@ -58,4 +58,4 @@ const Toplist = () => {
     ) 
 }  
 
-export default Toplist;
+export default Watchlist;

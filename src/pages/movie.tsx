@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 
 import {
   Card,
@@ -16,8 +16,8 @@ import { useLocation } from 'react-router-dom';
 import { getMovieById } from '../requests/movie.requests';
 import { AddIcon, StarIcon, CheckIcon } from '@chakra-ui/icons';
 import { addMovieToToplist } from '../requests/toplist.requests';
-
-const TEMP_USER_ID = 1;
+import { addMovieToWatchlist } from '../requests/watchlist.requests';
+import { UserContext } from '../context/user.context';
 
 const MoviePage = () => {
     const[movie, setMovie] = useState<Movie| null>(null);
@@ -26,14 +26,16 @@ const MoviePage = () => {
     const [inWatchlist, setInWatchlist] = useState(false);
 
     const location = useLocation();
+    const{ user } = useContext(UserContext);
 
     useEffect(() => {
       const fetchData = async () => {
           setLoading(true);
           const stateData = location.state;
-          const movieDetails = await getMovieById(stateData, TEMP_USER_ID);
+          const movieDetails = await getMovieById(stateData, user?.user_id);
           setMovie(movieDetails);
           setInToplist(movieDetails.BelongsToToplist);
+          setInWatchlist(movieDetails.BelongsToWatchlist);
           setLoading(false);
       }
       fetchData();
@@ -41,7 +43,7 @@ const MoviePage = () => {
 
     const handleAddToToplist = () => {
       setLoading(true);
-      addMovieToToplist(movie, TEMP_USER_ID)
+      addMovieToToplist(movie, user?.user_id)
         .then(() => {
           setInToplist(true);
           setLoading(false);
@@ -54,7 +56,7 @@ const MoviePage = () => {
   
     const handleAddToWatchlist = () => {
       setLoading(true);
-      addMovieToToplist(movie, TEMP_USER_ID)
+      addMovieToWatchlist(movie, user?.user_id)
         .then(() => {
           setInWatchlist(true);
           setLoading(false);
@@ -128,40 +130,55 @@ const MoviePage = () => {
                 </Text>
               </Container>
               <Stack direction="row" justifyContent="center">
-              {inToplist ? <Button
-                variant="solid"
-                colorScheme="green"
-                leftIcon={<CheckIcon />}
-                mx={'auto'}
-                isLoading={loading}>
-                Added to toplist
-              </Button> : 
+              {user ? (
+                  <>
+                    {inToplist ? (
                       <Button
-                       variant="ghost"
-                       colorScheme="green"
-                       leftIcon={<AddIcon />}
-                       mx={'auto'}
-                       onClick={handleAddToToplist}
-                       isLoading={loading}>
-                       Add to toplist
-                     </Button>}
-              {inWatchlist ? <Button
-                variant="solid"
-                colorScheme="green"
-                leftIcon={<CheckIcon />}
-                mx={'auto'}
-                isLoading={loading}>
-                Added to watchlist
-              </Button> : 
+                        variant="solid"
+                        colorScheme="green"
+                        leftIcon={<CheckIcon />}
+                        mx={'auto'}
+                        isLoading={loading}
+                      >
+                        Added to toplist
+                      </Button>
+                    ) : (
                       <Button
-                      variant="ghost"
-                      colorScheme="green"
-                      leftIcon={<AddIcon />}
-                      mx={'auto'}
-                      onClick={handleAddToWatchlist}
-                      isLoading={loading}>
-                      Add to watchlist
-                    </Button>}
+                        variant="ghost"
+                        colorScheme="green"
+                        leftIcon={<AddIcon />}
+                        mx={'auto'}
+                        onClick={handleAddToToplist}
+                        isLoading={loading}
+                      >
+                        Add to toplist
+                      </Button>
+                    )}
+
+                    {inWatchlist ? (
+                      <Button
+                        variant="solid"
+                        colorScheme="green"
+                        leftIcon={<CheckIcon />}
+                        mx={'auto'}
+                        isLoading={loading}
+                      >
+                        Added to watchlist
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        colorScheme="green"
+                        leftIcon={<AddIcon />}
+                        mx={'auto'}
+                        onClick={handleAddToWatchlist}
+                        isLoading={loading}
+                      >
+                        Add to watchlist
+                      </Button>
+                    )}
+                  </>
+                ) : null}
               </Stack>
             </Stack>
           </Container>

@@ -9,6 +9,7 @@ import Navbar from './components/navbar';
 import Login from './pages/login';
 import Profile from './pages/profile';
 import MoviePage from './pages/movie';
+import Watchlist from './pages/watchlist';
 
 function App() {
   const { setUser } = useContext(UserContext);
@@ -27,7 +28,7 @@ function App() {
         <Route index element={<Mvp />}></Route>
         <Route path="/toplist" element={<Toplist />}></Route>
         <Route path="/actors" element={<ActorPage />}></Route>
-        <Route path="/watchlist" element={<Toplist />}></Route>
+        <Route path="/watchlist" element={<Watchlist />}></Route>
         <Route path="/movie" element={<MoviePage />}></Route>
       </Route>
         <Route path="/register" element={<Register />}></Route>

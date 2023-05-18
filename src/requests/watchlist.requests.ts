@@ -1,8 +1,8 @@
 import { Movie } from '../types/movie';
 
-const API_URL = "http://localhost:3000/bestmovies/v1/toplists";
+const API_URL = "http://localhost:3000/bestmovies/v1/watchlists";
 
-export const addMovieToToplist = async (
+export const addMovieToWatchlist = async (
   movie: Movie,
   userId: number
   ): Promise<boolean> => {
@@ -24,7 +24,7 @@ export const addMovieToToplist = async (
   }
 };
 
-export const deleteMovieFromToplist = async (
+export const deleteMovieFromWatchlist = async (
   movie: Movie,
   userId: number
   ): Promise<void> => {
@@ -46,7 +46,7 @@ export const deleteMovieFromToplist = async (
   }
 };
 
-export const getToplist = async (userId: number): Promise<Movie[]> => {
+export const getWatchlist = async (userId: number): Promise<Movie[]> => {
   try {
     const response = await fetch(`${API_URL}/${userId}}`, {
       method: "GET",
