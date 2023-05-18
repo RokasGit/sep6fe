@@ -12,6 +12,10 @@ import {
   LinkProps,
   Button,
   Avatar,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from '@chakra-ui/react';
 
 import { UserContext } from '../context/user.context';
@@ -48,26 +52,50 @@ const Navbar = () => {
           />
           <HStack spacing={8} alignItems={'center'}>
             <NavLink
-            onClick={() => {navigate('/')}}
-            >Home</NavLink>
+              onClick={() => {
+                navigate('/');
+              }}>
+              Home
+            </NavLink>
             <HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
-              {user && Links.map((link) => (
-                <NavLink
-                  key={link}
-                  onClick={() => {
-                    navigate(`/${link.toLocaleLowerCase()}`);
-                  }}>
-                  {link}
-                </NavLink>
-              ))}
+              {user &&
+                Links.map((link) => (
+                  <NavLink
+                    key={link}
+                    onClick={() => {
+                      navigate(`/${link.toLocaleLowerCase()}`);
+                    }}>
+                    {link}
+                  </NavLink>
+                ))}
             </HStack>
           </HStack>
           <Flex alignItems={'center'} gap={3}>
             {user ? (
-              <Avatar name={user.username} size={'sm'} />
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={'full'}
+                  variant={'link'}
+                  textDecoration="none !important"
+                  cursor={'pointer'}
+                  minW={0}>
+                  <Avatar name={user.username} size={'sm'} />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={() => navigate(`/profile/${user.userId}`)}>
+                    👤 Profile
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate('/find-users')}>
+                    🧑 Find users
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem>➡️ Logout</MenuItem>
+                </MenuList>
+              </Menu>
             ) : (
               <>
                 <Button
