@@ -32,7 +32,7 @@ const Watchlist = () => {
             return;
           }
           // if we are coming from the home page (MVP), we fetch the movies from the API
-            setMovies(await getWatchlist(user?.user_id));
+            setMovies(await getWatchlist(user?.userId ?? -1));
             setLoading(false);
         }
         fetchData();
