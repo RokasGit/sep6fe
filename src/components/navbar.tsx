@@ -40,7 +40,14 @@ const NavLink: FC<NavLinkProps> = ({ children, ...otherProps }) => (
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    navigate('/');
+  };
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -93,7 +100,7 @@ const Navbar = () => {
                     🧑 Find users
                   </MenuItem>
                   <MenuDivider />
-                  <MenuItem>➡️ Logout</MenuItem>
+                  <MenuItem onClick={logout}>➡️ Logout</MenuItem>
                 </MenuList>
               </Menu>
             ) : (
