@@ -16,30 +16,30 @@ import { AddIcon, CheckIcon, InfoIcon, MinusIcon, StarIcon } from '@chakra-ui/ic
 
 import { Movie } from "../types/movie";
 
-import { deleteMovieFromToplist } from '../requests/toplist.requests';
+import { deleteMovieFromWatchlist } from '../requests/watchlist.requests';
 import { UserContext } from '../context/user.context';
-import { addMovieToWatchlist } from '../requests/watchlist.requests';
+import { addMovieToToplist } from '../requests/toplist.requests';
 import { useNavigate } from 'react-router-dom';
 
-type ToplistMovieCardProps = {
+type WatchlistMovieCardProps = {
     movie: Movie;
   };
 
-const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
+const WatchlistMovieCard: FC<WatchlistMovieCardProps> = ({ movie }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [inWatchlist, setInWatchlist] = useState(false);
+    const [inToplist, setInToplist] = useState(false);
 
     const { removeMovie } = useContext(WatchlistContext);
 
     const{ user } = useContext(UserContext);
 
     useEffect(() =>{
-      setInWatchlist(movie.BelongsToWatchlist);
+      setInToplist(movie.BelongsToToplist);
     },[]);
 
-    const handleDeleteFromToplist = () => {
+    const handleDeleteFromWatchlist = () => {
       setIsLoading(true);
-      deleteMovieFromToplist(movie, user?.user_id).then(()=> {
+      deleteMovieFromWatchlist(movie, user?.user_id).then(()=> {
         removeMovie(movie);
         setIsLoading(false);
       }).catch((error) => {
@@ -48,11 +48,11 @@ const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
       })
     };
 
-    const handleAddToWatchlist = () => {
+    const handleAddToToplist = () => {
       setIsLoading(true);
-      addMovieToWatchlist(movie, user?.user_id)
+      addMovieToToplist(movie, user?.user_id)
         .then(() => {
-          setInWatchlist(true);
+          setInToplist(true);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -98,11 +98,11 @@ const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
               colorScheme="green"
               leftIcon={<MinusIcon />}
               mx={'auto'}
-              onClick={handleDeleteFromToplist}
+              onClick={handleDeleteFromWatchlist}
               isLoading={isLoading}>
-              Delete from toplist
+              Delete from watchlist
             </Button>
-            {inWatchlist ? (
+            {inToplist ? (
                       <Button
                         variant="solid"
                         colorScheme="green"
@@ -110,7 +110,7 @@ const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
                         mx={'auto'}
                         isLoading={isLoading}
                       >
-                        Added to watchlist
+                        Added to toplist
                       </Button>
                     ) : (
                       <Button
@@ -118,10 +118,10 @@ const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
                         colorScheme="green"
                         leftIcon={<AddIcon />}
                         mx={'auto'}
-                        onClick={handleAddToWatchlist}
+                        onClick={handleAddToToplist}
                         isLoading={isLoading}
                       >
-                        Add to watchlist
+                        Add to toplist
                       </Button>
                     )}
           </Stack>
@@ -130,4 +130,4 @@ const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
     );
   };
 
-  export default ToplistMovieCard;
+  export default WatchlistMovieCard;

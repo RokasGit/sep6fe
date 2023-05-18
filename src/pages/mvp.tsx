@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useContext } from 'react';
 
 import {
   Box,
@@ -23,13 +23,11 @@ import { Movie } from '../types/movie';
 import { getMoviesByTitle } from '../requests/movie.requests';
 
 import MovieCard from '../components/movie-card';
-
 import { Actor } from '../types/actor';
 import { MovieStatList } from '../components/actor-stat';
 import { MovieStat } from '../components/actor-stat';
 import { getActorByName } from '../requests/actor.requests';
-
-const TEMP_USER_ID = 1;
+import { UserContext } from '../context/user.context';
 
 const Mvp = () => {
   const [Title, setTitle] = useState('');
@@ -37,6 +35,8 @@ const Mvp = () => {
   const [actors, setActor] = useState<Actor[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchType, setSearchType] = useState<'Movies' | 'Actors'>('Movies');
+
+  const{ user } = useContext(UserContext);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -54,7 +54,7 @@ const Mvp = () => {
     try {
 
       if (searchType === 'Movies') {
-        const movies: Movie[] = await getMoviesByTitle(Title, TEMP_USER_ID);
+        const movies: Movie[] = await getMoviesByTitle(Title, user?.user_id);
         setMovies(movies);
       } else {
         const actors: Actor[] = await getActorByName(Title);

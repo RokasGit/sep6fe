@@ -54,7 +54,7 @@ const Navbar = () => {
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
+              {user && Links.map((link) => (
                 <NavLink
                   key={link}
                   onClick={() => {
