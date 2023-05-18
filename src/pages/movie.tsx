@@ -17,6 +17,8 @@ import { getMovieById } from '../requests/movie.requests';
 import { AddIcon, StarIcon, CheckIcon } from '@chakra-ui/icons';
 import { addMovieToToplist } from '../requests/toplist.requests';
 
+import RateMovie from '../components/review-popUp'
+
 const TEMP_USER_ID = 1;
 
 const MoviePage = () => {
@@ -163,6 +165,7 @@ const MoviePage = () => {
                       Add to watchlist
                     </Button>}
               </Stack>
+              { movie ? <RateMovie userId={TEMP_USER_ID} movie={movie}/> : null}
             </Stack>
           </Container>
         </CardBody>

@@ -7,7 +7,7 @@ export const getActorByName = async (name: string): Promise<Actor[]> => {
   return await fetch(`${ACTOR_URL}/${name}`)
     .then((response) => response.json())
     .then((res) => {
-      return res.data;
+      return res;
     })
     .catch((err) => {
       throw Error(err);
