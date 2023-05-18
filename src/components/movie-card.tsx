@@ -18,9 +18,7 @@ import { AddIcon, InfoIcon, CheckIcon, StarIcon } from '@chakra-ui/icons';
 
 import { Movie } from '../types/movie';
 
-import RateMovie from '../components/review-popUp'
-
-import { UserContext } from '../context/user.context';
+import RateMovie from '../components/review-popUp';
 
 import { addMovieToToplist } from '../requests/toplist.requests';
 
@@ -37,13 +35,12 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
   const [inToplist, setInToplist] = useState(false);
   const [inWatchlist, setInWatchlist] = useState(false);
 
-  const{ user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     setInToplist(movie.BelongsToToplist);
-    setInWatchlist(movie.BelongsToWatchlist)
-  },[]);
-
+    setInWatchlist(movie.BelongsToWatchlist);
+  }, []);
 
   const handleAddToToplist = () => {
     setIsLoading(true);
@@ -71,12 +68,7 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
       });
   };
   // destructure props of movie
-  const {
-    Poster,
-    Title,
-    Type,
-    Year,
-  } = movie;
+  const { Poster, Title, Type, Year } = movie;
 
   const navigate = useNavigate();
 
@@ -110,71 +102,71 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
                   {Title} ({Year})
                 </Text>
                 <Container display={'flex'} gap={2} justifyContent={'center'}>
-                  <Tag size={'md'} colorScheme="gray" justifySelf={'flex-start'}>
-                      {Type.charAt(0).toUpperCase() + Type.slice(1)}
+                  <Tag
+                    size={'md'}
+                    colorScheme="gray"
+                    justifySelf={'flex-start'}>
+                    {Type.charAt(0).toUpperCase() + Type.slice(1)}
                   </Tag>
                 </Container>
               </Heading>
-            <Button
+              <Button
                 variant="ghost"
                 colorScheme="green"
                 leftIcon={<InfoIcon />}
                 mx={'auto'}
-                onClick={()=> {
-                  navigate('/movie', {state: movie.imdbID});}}
+                onClick={() => {
+                  navigate('/movie', { state: movie.imdbID });
+                }}
                 isLoading={isLoading}>
                 See details
               </Button>
               {user ? (
-                  <>
-                    {inToplist ? (
-                      <Button
-                        variant="solid"
-                        colorScheme="green"
-                        leftIcon={<CheckIcon />}
-                        mx={'auto'}
-                        isLoading={isLoading}
-                      >
-                        Added to toplist
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="ghost"
-                        colorScheme="green"
-                        leftIcon={<AddIcon />}
-                        mx={'auto'}
-                        onClick={handleAddToToplist}
-                        isLoading={isLoading}
-                      >
-                        Add to toplist
-                      </Button>
-                    )}
+                <>
+                  {inToplist ? (
+                    <Button
+                      variant="solid"
+                      colorScheme="green"
+                      leftIcon={<CheckIcon />}
+                      mx={'auto'}
+                      isLoading={isLoading}>
+                      Added to toplist
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      colorScheme="green"
+                      leftIcon={<AddIcon />}
+                      mx={'auto'}
+                      onClick={handleAddToToplist}
+                      isLoading={isLoading}>
+                      Add to toplist
+                    </Button>
+                  )}
 
-                    {inWatchlist ? (
-                      <Button
-                        variant="solid"
-                        colorScheme="green"
-                        leftIcon={<CheckIcon />}
-                        mx={'auto'}
-                        isLoading={isLoading}
-                      >
-                        Added to watchlist
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="ghost"
-                        colorScheme="green"
-                        leftIcon={<AddIcon />}
-                        mx={'auto'}
-                        onClick={handleAddToWatchlist}
-                        isLoading={isLoading}
-                      >
-                        Add to watchlist
-                      </Button>
-                    )}
-                  </>
-                ) : null}
-              </Stack>
+                  {inWatchlist ? (
+                    <Button
+                      variant="solid"
+                      colorScheme="green"
+                      leftIcon={<CheckIcon />}
+                      mx={'auto'}
+                      isLoading={isLoading}>
+                      Added to watchlist
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      colorScheme="green"
+                      leftIcon={<AddIcon />}
+                      mx={'auto'}
+                      onClick={handleAddToWatchlist}
+                      isLoading={isLoading}>
+                      Add to watchlist
+                    </Button>
+                  )}
+                </>
+              ) : null}
+            </Stack>
           </Stack>
         </Container>
       </CardBody>
