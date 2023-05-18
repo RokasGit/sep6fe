@@ -38,13 +38,13 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    setInToplist(movie.BelongsToToplist);
-    setInWatchlist(movie.BelongsToWatchlist);
+    setInToplist(movie.BelongsToToplist ?? false);
+    setInWatchlist(movie.BelongsToWatchlist ?? false);
   }, []);
 
   const handleAddToToplist = () => {
     setIsLoading(true);
-    addMovieToToplist(movie, user?.user_id)
+    addMovieToToplist(movie, user?.userId ?? -1)
       .then(() => {
         setInToplist(true);
         setIsLoading(false);
@@ -57,7 +57,7 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
 
   const handleAddToWatchlist = () => {
     setIsLoading(true);
-    addMovieToWatchlist(movie, user?.user_id)
+    addMovieToWatchlist(movie, user?.userId ?? -1)
       .then(() => {
         setInWatchlist(true);
         setIsLoading(false);
@@ -106,7 +106,7 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
                     size={'md'}
                     colorScheme="gray"
                     justifySelf={'flex-start'}>
-                    {Type.charAt(0).toUpperCase() + Type.slice(1)}
+                    {Type?.charAt(0).toUpperCase()?? 'N' + Type?.slice(1) ?? 'one'}
                   </Tag>
                 </Container>
               </Heading>

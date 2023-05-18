@@ -18,6 +18,7 @@ import {
   } from '@chakra-ui/react';
 import { User } from '../types/user';
 import { Toplist } from '../types/toplist';
+import { Watchlist } from '../types/watchlist';
   
   // type SocialProfileWithImageProps = {
   //   userId: number;
@@ -30,6 +31,7 @@ import { Toplist } from '../types/toplist';
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<User>();
     const [toplist, setToplist] = useState<Toplist>();
+    const [watchlist, setWatchlist] = useState<Watchlist>();
     const navigate = useNavigate();
     useEffect(() => {
       const fetchData = async () => {
@@ -40,6 +42,7 @@ import { Toplist } from '../types/toplist';
       await UserRequests.getUserProfile(userId).then((response) => {
         setUser(response.user);
         setToplist(response.toplist);
+        setWatchlist(response.watchlist);
         setLoading(false);      
       }).catch((error) => {
         console.log(error);
@@ -60,7 +63,7 @@ import { Toplist } from '../types/toplist';
     };
     const handleWatchlist = async () => {
       try {
-        navigate('/watchlist');
+        navigate('/watchlist', {state: {movies: watchlist?.movies}});
       }catch(error) {
         console.log(error);
       }

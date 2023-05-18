@@ -1,5 +1,6 @@
 import { User } from "../types/user";
 import { Toplist } from "../types/toplist";
+import { Watchlist } from "../types/watchlist";
 
 const API_URL = "http://localhost:3000/bestmovies/v1/users";
 
@@ -60,7 +61,7 @@ export default class UserRequests {
   }
   static async getUserProfile(
     id: number
-  ): Promise<{ user: User; toplist: Toplist }> {
+  ): Promise<{ user: User; toplist: Toplist; watchlist: Watchlist }> {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
         method: "GET",

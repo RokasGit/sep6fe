@@ -41,7 +41,7 @@ const Mvp = () => {
     setIsLoading(true);
 
     try {
-      const movies: Movie[] = await getMoviesByTitle(movieTitle, user?.user_id);
+      const movies: Movie[] = await getMoviesByTitle(movieTitle, user?.userId ?? -1);
       setMovies(movies);
     } catch (error) {
       console.log(error);

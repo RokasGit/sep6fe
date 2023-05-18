@@ -34,12 +34,12 @@ const WatchlistMovieCard: FC<WatchlistMovieCardProps> = ({ movie }) => {
     const{ user } = useContext(UserContext);
 
     useEffect(() =>{
-      setInToplist(movie.BelongsToToplist);
+      setInToplist(movie?.BelongsToToplist ?? false);
     },[]);
 
     const handleDeleteFromWatchlist = () => {
       setIsLoading(true);
-      deleteMovieFromWatchlist(movie, user?.user_id).then(()=> {
+      deleteMovieFromWatchlist(movie, user?.userId ?? -1).then(()=> {
         removeMovie(movie);
         setIsLoading(false);
       }).catch((error) => {
@@ -50,7 +50,7 @@ const WatchlistMovieCard: FC<WatchlistMovieCardProps> = ({ movie }) => {
 
     const handleAddToToplist = () => {
       setIsLoading(true);
-      addMovieToToplist(movie, user?.user_id)
+      addMovieToToplist(movie, user?.userId ?? -1)
         .then(() => {
           setInToplist(true);
           setIsLoading(false);
