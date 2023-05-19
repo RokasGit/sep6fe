@@ -1,5 +1,4 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { WatchlistContext } from '../context/watchlist.context';
 
 import {
   Button, 
@@ -20,6 +19,7 @@ import { deleteMovieFromToplist } from '../requests/toplist.requests';
 import { UserContext } from '../context/user.context';
 import { addMovieToWatchlist } from '../requests/watchlist.requests';
 import { useNavigate } from 'react-router-dom';
+import { ToplistContext } from '../context/toplist.context';
 
 type ToplistMovieCardProps = {
     movie: Movie;
@@ -29,7 +29,7 @@ const ToplistMovieCard: FC<ToplistMovieCardProps> = ({ movie }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [inWatchlist, setInWatchlist] = useState(false);
 
-    const { removeMovie } = useContext(WatchlistContext);
+    const { removeMovie } = useContext(ToplistContext);
 
     const{ user } = useContext(UserContext);
 
