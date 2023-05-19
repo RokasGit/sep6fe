@@ -15,39 +15,57 @@ import {
   Flex,
   SimpleGrid,
   Spinner,
-  useTheme
+  useTheme,
+  Select
 } from '@chakra-ui/react';
 
 import { Movie } from '../types/movie';
 import { getMoviesByTitle } from '../requests/movie.requests';
 
 import MovieCard from '../components/movie-card';
+import { Actor } from '../types/actor';
+import { MovieStatList } from '../components/actor-stat';
+import { MovieStat } from '../components/actor-stat';
+import { getActorByName } from '../requests/actor.requests';
 import { UserContext } from '../context/user.context';
 
 const Mvp = () => {
-  const [movieTitle, setMovieTitle] = useState('');
+  const [Title, setTitle] = useState('');
   const [movies, setMovies] = useState<Movie[] | null>([]);
+  const [actors, setActor] = useState<Actor[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchType, setSearchType] = useState<'Movies' | 'Actors'>('Movies');
 
   const{ user } = useContext(UserContext);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setMovieTitle(event.target.value);
+    setTitle(event.target.value);
   };
 
-  const handleFindMovie = async () => {
-    if (!movieTitle) return;
+  const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearchType(event.target.value as 'Movies' | 'Actors');
+  };
+
+  const handleSearch = async () => {
+    if (!Title) return;
 
     setIsLoading(true);
 
     try {
-      const movies: Movie[] = await getMoviesByTitle(movieTitle, user?.userId ?? -1);
-      setMovies(movies);
+
+      if (searchType === 'Movies') {
+        const movies: Movie[] = await getMoviesByTitle(Title, user?.userId ?? -1);
+        setMovies(movies);
+      } else {
+        const actors: Actor[] = await getActorByName(Title);
+        setActor(actors);
+      }
+
     } catch (error) {
       console.log(error);
     }
 
-    setMovieTitle('');
+    setTitle('');
     setIsLoading(false);
   };
 
@@ -73,27 +91,36 @@ const Mvp = () => {
           </Heading>
           <Stack
             direction={'column'}
-            spacing={3}
+            spacing={10}
             align={'center'}
             alignSelf={'center'}
             position={'relative'}>
-            <Stack direction={'row'} spacing={3}>
+            <Stack direction={'row'} spacing={3} w="100%">
+
+              <Select onChange={handleSearchTypeChange} value={searchType} width="50%">
+                <option value='Movies'>Movies</option>
+                <option value='Actors'>Actors</option>
+              </Select>
+
               <Input
-                placeholder="Enter movie title"
+                placeholder={`Enter ${searchType.toLowerCase()} name`}
                 onChange={handleChange}
-                value={movieTitle}
+                value={Title}
               />
               <Button
                 colorScheme={'green'}
                 bg={'green.400'}
-                px={6}
+                px={8}
+                py={2}
                 _hover={{
                   bg: 'green.500',
                 }}
-                onClick={handleFindMovie}
-                isLoading={isLoading}>
+                onClick={handleSearch}
+                isLoading={isLoading}
+              >
                 Search
               </Button>
+
             </Stack>
             <Box>
               <Icon
@@ -115,16 +142,41 @@ const Mvp = () => {
               </Text>
             </Box>
           </Stack>
-          {movies && movies?.length > 0 ? <Center overflowY="hidden" h="55vh" sx={{ scrollbarWidth }}>
-            {isLoading ? (<Spinner size="xl" />) : (
-              <Flex direction="column" overflowY="scroll" h="inherit">
-                <SimpleGrid columns={[1, 2, 3]} spacing={10}>
-                  {movies.map((movie) => (
-                    <MovieCard key={movie.imdbID} movie={movie} />
-                  ))}
-                </SimpleGrid>
-              </Flex>
-            )}</Center> : <Box></Box>}
+
+          {searchType === 'Movies' ? (
+            movies && movies.length > 0 ? (
+              <Center overflowY="hidden" h="55vh" sx={{ scrollbarWidth }}>
+                {isLoading ? (
+                  <Spinner size="xl" />
+                ) : (
+                  <Flex direction="column" overflowY="scroll" h="inherit">
+                    <SimpleGrid columns={[1, 2, 3]} spacing={10}>
+                      {movies.map((movie) => (
+                        <MovieCard key={movie.imdbID} movie={movie} />
+                      ))}
+                    </SimpleGrid>
+                  </Flex>
+                )}
+              </Center>
+            ) : (
+              <Box></Box>
+            )
+          ) : (
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {actors && actors.length > 0 && (
+                actors.length > 1
+                  ? <MovieStatList cardsData={actors} />
+                  : <MovieStat actor={actors[0]} spacing={4} />
+              )}
+            </Box>
+          )}
+
         </Stack>
       </Container>
     </>

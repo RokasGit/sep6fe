@@ -1,6 +1,6 @@
-import { Box, Button, FormControl, FormLabel, Heading, Textarea, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, IconButton } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Card, Flex, CardBody, Stack, Heading, Text, Textarea, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, IconButton, Center } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { addReview } from '../requests/review.requests';
 import { Review } from "../types/review";
 import { Movie } from "../types/movie";
@@ -11,22 +11,58 @@ type RateMovieProps = {
   userId: number;
 };
 
-const RateMovie: React.FC<RateMovieProps> = ({ movie, userId}) => {
+export const ReviewCard = ({ review }: { review: Review }) => {
+
+  return (
+    <Box borderWidth={1} borderRadius="lg" overflow="hidden" p={4} boxShadow="sm">
+    <Heading size="md" mb={2}>{review.movieName}</Heading>
+    <Box display="flex" mb={3} alignContent={'center'} justifyContent={'center'}>
+      {[1, 2, 3, 4, 5].map((starIndex) => (
+        <StarIcon
+          key={starIndex}
+          color={starIndex <= review.ratting ? "yellow.500" : "gray.300"}
+          boxSize="2rem"
+        />
+      ))}
+    </Box>
+
+    <Heading size="md" mb={2} >Comment</Heading>
+    <Text>{review.comment}</Text>
+  </Box>
+  );
+};
+
+
+const RateMovie: React.FC<RateMovieProps> = ({ movie, userId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [status, setStatus] = useState(''); 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [review, setReview] = useState<Review | null>(null);
 
-  const handleSubmit = () => {
-       
-    const reviewToSend:Review = {
-        userId: userId,
-        movieId: movie.imdbID,
-        ratting: rating,
-        comment: comment,
-        date: new Date()
+  
+  useEffect(() => {
+    console.log(movie.review);
+    if(movie.review){
+      setReview(movie.review);
+    }
+  }, []);
+
+  const handleSubmit = async () => {
+
+    const reviewToSend: Review = {
+      userId: userId,
+      movieId: movie.imdbID,
+      movieName: movie.Title,
+      ratting: rating,
+      comment: comment,
+      date: new Date()
     }
 
-    addReview(reviewToSend, userId);
+    setReview(reviewToSend);
+
+    const status = await addReview(reviewToSend, userId);
+    setStatus(status);
     onClose();
   };
 
@@ -38,9 +74,16 @@ const RateMovie: React.FC<RateMovieProps> = ({ movie, userId}) => {
     setComment(event.target.value);
   };
 
+  if (review !== null) {
+    return <ReviewCard review={review} />;
+  }
+
   return (
     <>
-      <IconButton aria-label="Rate Movie" icon={<StarIcon />} onClick={onOpen} />
+      <Button aria-label="Rate Movie" onClick={onOpen}>
+        <StarIcon />
+        <Text ml={1}>Rate Movie</Text>
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

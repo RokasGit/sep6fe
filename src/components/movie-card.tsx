@@ -18,8 +18,6 @@ import { AddIcon, InfoIcon, CheckIcon, StarIcon } from '@chakra-ui/icons';
 
 import { Movie } from '../types/movie';
 
-import RateMovie from '../components/review-popUp';
-
 import { addMovieToToplist } from '../requests/toplist.requests';
 
 import { addMovieToWatchlist } from '../requests/watchlist.requests';

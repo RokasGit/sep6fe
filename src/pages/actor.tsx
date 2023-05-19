@@ -20,7 +20,7 @@ import { MovieStatList } from '../components/actor-stat';
 import { MovieStat } from '../components/actor-stat';
 import { getActorByName } from '../requests/actor.requests';
 
-const Mvp = () => {
+const actorPage = () => {
     const [actorName, setActorName] = useState('');
     const [actors, setActor] = useState<Actor[] | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -107,4 +107,4 @@ const Mvp = () => {
     );
 };
 
-export default Mvp;
+export default actorPage;

@@ -25,7 +25,7 @@ export const getReviewsBasedOnUserId = async (userId: number): Promise<Review[]>
 export const addReview = async (
   review: Review,
   userId: number
-): Promise<void> => {
+): Promise<string> => {
   try {
 
     const response = await fetch(`${Review_url}/${userId}`, {
@@ -42,7 +42,7 @@ export const addReview = async (
 
     const data = await response.json();
 
-    console.log(data);
+    return data.status;
   } catch (error: any) {
     throw Error(error.message);
   }
