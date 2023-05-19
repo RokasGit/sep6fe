@@ -10,7 +10,7 @@ import { User } from '../types/user';
 const FindUsers = () => {
   const [userDetails, setUserDetails] = useState('');
   const [users, setUsers] = useState<User[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[] | null>(null);
 
   const { user } = useContext(UserContext);
 
@@ -24,7 +24,7 @@ const FindUsers = () => {
 
   useEffect(() => {
     if (userDetails === '') {
-      setFilteredUsers([]);
+      setFilteredUsers(null);
       return;
     }
     const filteredUsers = users.filter(
