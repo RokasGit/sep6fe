@@ -25,7 +25,6 @@ const Toplist = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-          console.log(user?.userId)
           // state movies is undefined if we are not coming from the home page (MVP)
           
           if (state && state.movies) {

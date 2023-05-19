@@ -135,13 +135,13 @@ import { Watchlist } from '../types/watchlist';
               <Button
               w={'full'}
               mt={8}
-              bg={useColorModeValue('#151f21', 'gray.900')}
-              color={'white'}
               onClick={handleToplist}
-              rounded={'md'}
+              colorScheme={'green'}
+              bg={'green.400'}
+              px={8}
+              py={2}
               _hover={{
-                transform: 'translateY(-2px)',
-                boxShadow: 'lg',
+                bg: 'green.500',
               }}>
               Toplist
             </Button>
@@ -151,12 +151,12 @@ import { Watchlist } from '../types/watchlist';
               w={'full'}
               mt={8}
               onClick={handleWatchlist}
-              bg={useColorModeValue('#151f21', 'gray.900')}
-              color={'white'}
-              rounded={'md'}
+              colorScheme={'green'}
+              bg={'green.400'}
+              px={8}
+              py={2}
               _hover={{
-                transform: 'translateY(-2px)',
-                boxShadow: 'lg',
+                bg: 'green.500',
               }}>
               Watchlist
             </Button>
@@ -166,12 +166,12 @@ import { Watchlist } from '../types/watchlist';
               w={'full'}
               mt={8}
               onClick={handleReviews}
-              bg={useColorModeValue('#151f21', 'gray.900')}
-              color={'white'}
-              rounded={'md'}
+              colorScheme={'green'}
+              bg={'green.400'}
+              px={8}
+              py={2}
               _hover={{
-                transform: 'translateY(-2px)',
-                boxShadow: 'lg',
+                bg: 'green.500',
               }}>
               Reviews
             </Button>

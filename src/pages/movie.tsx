@@ -85,7 +85,7 @@ const MoviePage = () => {
             </Text>
             <Container display={'flex'} gap={2} justifyContent={'center'}>
               <Tag size={'md'} colorScheme="gray" justifySelf={'flex-start'}>
-                {movie && movie?.Type?.charAt(0).toUpperCase()? + movie?.Type.slice(1) ?? 'None' : 'None'}
+                {movie && movie.Type &&  movie?.Type?.charAt(0).toUpperCase() + movie?.Type?.slice(1)}
               </Tag>
               <Tag size={'md'} colorScheme="purple" justifySelf={'flex-start'}>
                 {movie && movie.Language}

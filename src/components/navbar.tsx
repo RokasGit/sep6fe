@@ -50,7 +50,7 @@ const Navbar = () => {
 
   return (
     <>
-      <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+      <Box bg={useColorModeValue('gray.50', 'gray.900')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}
@@ -95,9 +95,6 @@ const Navbar = () => {
                 <MenuList>
                   <MenuItem onClick={() => navigate(`/profile/${user.userId}`)}>
                     👤 Profile
-                  </MenuItem>
-                  <MenuItem onClick={() => navigate('/find-users')}>
-                    🧑 Find users
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem onClick={logout}>➡️ Logout</MenuItem>

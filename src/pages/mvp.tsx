@@ -28,13 +28,18 @@ import { MovieStatList } from '../components/actor-stat';
 import { MovieStat } from '../components/actor-stat';
 import { getActorByName } from '../requests/actor.requests';
 import { UserContext } from '../context/user.context';
+import UserRequests from '../requests/user.requests';
+import { User } from '../types/user';
+import UserList from '../components/user-list';
 
 const Mvp = () => {
   const [Title, setTitle] = useState('');
   const [movies, setMovies] = useState<Movie[] | null>([]);
   const [actors, setActor] = useState<Actor[] | null>(null);
+  const [users, setUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchType, setSearchType] = useState<'Movies' | 'Actors'>('Movies');
+  const [searchType, setSearchType] = useState<'Movies' | 'Actors' | 'Users'>('Movies');
 
   const{ user } = useContext(UserContext);
 
@@ -43,8 +48,27 @@ const Mvp = () => {
   };
 
   const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchType(event.target.value as 'Movies' | 'Actors');
+    setSearchType(event.target.value as 'Movies' | 'Actors' | 'Users');
   };
+
+  const getUsers = (name: string) => {
+    const fetchUsers = async () => {
+      const users = await UserRequests.getUsers();
+      setUsers(users);
+    };
+    fetchUsers();
+
+    if (name === '') {
+      setFilteredUsers([]);
+      return;
+    }
+    const filteredUsers = users.filter(
+      (u) =>
+        (u.email.includes(name) || u.username.includes(name)) &&
+        u.userId !== user?.userId
+    );
+    setFilteredUsers(filteredUsers);
+  }
 
   const handleSearch = async () => {
     if (!Title) return;
@@ -56,19 +80,71 @@ const Mvp = () => {
       if (searchType === 'Movies') {
         const movies: Movie[] = await getMoviesByTitle(Title, user?.userId ?? -1);
         setMovies(movies);
-      } else {
+      } else  if(searchType === 'Actors'){
         const actors: Actor[] = await getActorByName(Title);
         setActor(actors);
+      }
+      else{
+        getUsers(Title);
       }
 
     } catch (error) {
       console.log(error);
     }
-
+    
     setTitle('');
     setIsLoading(false);
   };
 
+  const renderSearchResults = () => {
+    switch (searchType) {
+      case 'Movies':
+        if (movies && movies.length > 0) {
+          return (
+            <Center overflowY="hidden" h="52vh" w="99vw" sx={{ scrollbarWidth }}>
+              {isLoading ? (
+                <Spinner size="xl" />
+              ) : (
+                <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
+                  <SimpleGrid columns={[1, 2, 3]} spacing={10}>
+                    {movies.map((movie) => (
+                      <MovieCard key={movie.imdbID} movie={movie} />
+                    ))}
+                  </SimpleGrid>
+                </Flex>
+              )}
+            </Center>
+          );
+        } else {
+          return <Box></Box>;
+        }
+      case 'Actors':
+        if (actors && actors.length > 0) {
+          return (
+            <Center overflowY="hidden" h="52vh" w="99vw" sx={{ scrollbarWidth }}>
+              {isLoading ? (
+                <Spinner size="xl" />
+              ) : (
+                <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
+                  <SimpleGrid columns={[1, 2, 3, 4]} spacing={5}>
+                    {actors.map((actor) => (
+                      <MovieStat key={actor.ID} actor={actor} spacing={4} />
+                    ))}
+                  </SimpleGrid>
+                </Flex>
+              )}
+            </Center>
+          );
+        } else {
+          return <Box></Box>;
+        }
+      default:
+        return (
+          <UserList users={filteredUsers} />
+        );
+    }
+  };
+  
   const theme = useTheme();
   const scrollbarWidth = theme.space[2];
 
@@ -100,6 +176,7 @@ const Mvp = () => {
               <Select onChange={handleSearchTypeChange} value={searchType} width="50%">
                 <option value='Movies'>Movies</option>
                 <option value='Actors'>Actors</option>
+                <option value='Users'>Users</option>
               </Select>
 
               <Input
@@ -142,46 +219,13 @@ const Mvp = () => {
               </Text>
             </Box>
           </Stack>
-
-          {searchType === 'Movies' ? (
-            movies && movies.length > 0 ? (
-              <Center overflowY="hidden" h="55vh" sx={{ scrollbarWidth }}>
-                {isLoading ? (
-                  <Spinner size="xl" />
-                ) : (
-                  <Flex direction="column" overflowY="scroll" h="inherit">
-                    <SimpleGrid columns={[1, 2, 3]} spacing={10}>
-                      {movies.map((movie) => (
-                        <MovieCard key={movie.imdbID} movie={movie} />
-                      ))}
-                    </SimpleGrid>
-                  </Flex>
-                )}
-              </Center>
-            ) : (
-              <Box></Box>
-            )
-          ) : (
-            <Box
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              {actors && actors.length > 0 && (
-                actors.length > 1
-                  ? <MovieStatList cardsData={actors} />
-                  : <MovieStat actor={actors[0]} spacing={4} />
-              )}
-            </Box>
-          )}
-
+                {renderSearchResults()}
         </Stack>
       </Container>
     </>
   );
 };
+
 
 const Arrow = createIcon({
   displayName: 'Arrow',
