@@ -33,10 +33,10 @@ const MoviePage = () => {
       const fetchData = async () => {
           setLoading(true);
           const stateData = location.state;
-          const movieDetails = await getMovieById(stateData, user?.userId);
+          const movieDetails = await getMovieById(stateData, user?.userId ?? -1);
           setMovie(movieDetails);
-          setInToplist(movieDetails.BelongsToToplist);
-          setInWatchlist(movieDetails.BelongsToWatchlist);
+          setInToplist(movieDetails?.BelongsToToplist ?? false);
+          setInWatchlist(movieDetails?.BelongsToWatchlist ?? false);
           setLoading(false);
       }
       fetchData();
@@ -44,7 +44,7 @@ const MoviePage = () => {
 
     const handleAddToToplist = () => {
       setLoading(true);
-      addMovieToToplist(movie, user?.userId)
+      addMovieToToplist(movie, user?.userId ?? -1)
         .then(() => {
           setInToplist(true);
           setLoading(false);
@@ -57,7 +57,7 @@ const MoviePage = () => {
   
     const handleAddToWatchlist = () => {
       setLoading(true);
-      addMovieToWatchlist(movie, user?.userId)
+      addMovieToWatchlist(movie, user?.userId ?? -1)
         .then(() => {
           setInWatchlist(true);
           setLoading(false);
@@ -85,7 +85,7 @@ const MoviePage = () => {
             </Text>
             <Container display={'flex'} gap={2} justifyContent={'center'}>
               <Tag size={'md'} colorScheme="gray" justifySelf={'flex-start'}>
-                {movie && movie.Type.charAt(0).toUpperCase() + movie.Type.slice(1)}
+                {movie && movie?.Type?.charAt(0).toUpperCase()? + movie?.Type.slice(1) ?? 'None' : 'None'}
               </Tag>
               <Tag size={'md'} colorScheme="purple" justifySelf={'flex-start'}>
                 {movie && movie.Language}

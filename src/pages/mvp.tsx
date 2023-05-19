@@ -54,7 +54,7 @@ const Mvp = () => {
     try {
 
       if (searchType === 'Movies') {
-        const movies: Movie[] = await getMoviesByTitle(Title, user?.user_id);
+        const movies: Movie[] = await getMoviesByTitle(Title, user?.userId ?? -1);
         setMovies(movies);
       } else {
         const actors: Actor[] = await getActorByName(Title);

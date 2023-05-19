@@ -12,6 +12,10 @@ import {
   LinkProps,
   Button,
   Avatar,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from '@chakra-ui/react';
 
 import { UserContext } from '../context/user.context';
@@ -36,7 +40,14 @@ const NavLink: FC<NavLinkProps> = ({ children, ...otherProps }) => (
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    navigate('/');
+  };
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -48,26 +59,50 @@ const Navbar = () => {
           />
           <HStack spacing={8} alignItems={'center'}>
             <NavLink
-            onClick={() => {navigate('/')}}
-            >Home</NavLink>
+              onClick={() => {
+                navigate('/');
+              }}>
+              Home
+            </NavLink>
             <HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
-              {user && Links.map((link) => (
-                <NavLink
-                  key={link}
-                  onClick={() => {
-                    navigate(`/${link.toLocaleLowerCase()}`);
-                  }}>
-                  {link}
-                </NavLink>
-              ))}
+              {user &&
+                Links.map((link) => (
+                  <NavLink
+                    key={link}
+                    onClick={() => {
+                      navigate(`/${link.toLocaleLowerCase()}`);
+                    }}>
+                    {link}
+                  </NavLink>
+                ))}
             </HStack>
           </HStack>
           <Flex alignItems={'center'} gap={3}>
             {user ? (
-              <Avatar name={user.username} size={'sm'} />
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={'full'}
+                  variant={'link'}
+                  textDecoration="none !important"
+                  cursor={'pointer'}
+                  minW={0}>
+                  <Avatar name={user.username} size={'sm'} />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={() => navigate(`/profile/${user.userId}`)}>
+                    👤 Profile
+                  </MenuItem>
+                  <MenuItem onClick={() => navigate('/find-users')}>
+                    🧑 Find users
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem onClick={logout}>➡️ Logout</MenuItem>
+                </MenuList>
+              </Menu>
             ) : (
               <>
                 <Button
