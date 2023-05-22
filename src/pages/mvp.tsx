@@ -51,25 +51,6 @@ const Mvp = () => {
     setSearchType(event.target.value as 'Movies' | 'Actors' | 'Users');
   };
 
-  const getUsers = (name: string) => {
-    const fetchUsers = async () => {
-      const users = await UserRequests.getUsers();
-      setUsers(users);
-    };
-    fetchUsers();
-
-    if (name === '') {
-      setFilteredUsers([]);
-      return;
-    }
-    const filteredUsers = users.filter(
-      (u) =>
-        (u.email.includes(name) || u.username.includes(name)) &&
-        u.userId !== user?.userId
-    );
-    setFilteredUsers(filteredUsers);
-  }
-
   const handleSearch = async () => {
     if (!Title) return;
 
@@ -85,7 +66,18 @@ const Mvp = () => {
         setActor(actors);
       }
       else{
-        getUsers(Title);
+        const users = await UserRequests.getUsers();
+        setUsers(users);
+        if (Title === '') {
+          setFilteredUsers([]);
+          return;
+        }
+        const filteredUsers = users.filter(
+          (u) =>
+            (u.email.includes(Title) || u.username.includes(Title)) &&
+            u.userId !== user?.userId
+        );
+        setFilteredUsers(filteredUsers);
       }
 
     } catch (error) {
