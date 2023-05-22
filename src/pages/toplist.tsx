@@ -1,27 +1,29 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { getToplist } from "../requests/toplist.requests"
-import  ToplistMovieCard  from "../components/toplist-movie-card"
-import { useLocation } from "react-router-dom";
+import { getToplist } from '../requests/toplist.requests';
+import ToplistMovieCard from '../components/toplist-movie-card';
+import { useLocation } from 'react-router-dom';
 import { ToplistContext } from '../context/toplist.context';
 
 import {
-    Flex,
-    Center,
-    Spinner,
-    SimpleGrid,
-    useTheme,
+  Flex,
+  Center,
+  Spinner,
+  SimpleGrid,
+  useTheme,
+  Text,
+  Box,
 } from '@chakra-ui/react';
 import { UserContext } from '../context/user.context';
 
 const Toplist = () => {
-    const location =  useLocation();
-    const state = location.state;
+  const location = useLocation();
+  const state = location.state;
 
-    const[loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-    const { movies, setMovies } = useContext(ToplistContext);
+  const { movies, setMovies } = useContext(ToplistContext);
 
-    const{ user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,24 +41,38 @@ const Toplist = () => {
         fetchData();
     }, []);
 
-    const theme = useTheme();
-    const scrollbarWidth = theme.space[2];
-    
-    return (
-        <Center overflowY="hidden" h="93vh" w="100vw" sx={{ scrollbarWidth }}>
-        {loading ? (
-          <Spinner size="xl" />
-        ) : (
-           <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
-            <SimpleGrid columns={[1, 2, 3, 4]} spacing={10}>
-              {movies && movies.map((movie) => (
-                <ToplistMovieCard key={movie.imdbID} movie={movie} />
-              ))}
-            </SimpleGrid>
-          </Flex>
-        )}
-      </Center>
-    ) 
-}  
+  const theme = useTheme();
+  const scrollbarWidth = theme.space[2];
+
+  return (
+    <Center overflowY="hidden" h="93vh" w="100vw" sx={{ scrollbarWidth }}>
+      {loading ? (
+        <Spinner size="xl" />
+      ) : (
+        <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
+          <SimpleGrid columns={[1, 2, 3, 4]} spacing={10}>
+            {movies && movies.length === 0 ? (
+              <Box
+                width="100vw"
+                mt={6}
+                display="flex"
+                justifyContent="center"
+                alignItems="center">
+                <Text fontSize="lg">The toplist is empty 😕</Text>
+              </Box>
+            ) : (
+              <>
+                {movies &&
+                  movies.map((movie) => (
+                    <ToplistMovieCard key={movie.imdbID} movie={movie} />
+                  ))}
+              </>
+            )}
+          </SimpleGrid>
+        </Flex>
+      )}
+    </Center>
+  );
+};
 
 export default Toplist;

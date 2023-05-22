@@ -4,7 +4,7 @@ import { User } from '../types/user';
 import { Box, Button, Card, CardBody, Text } from '@chakra-ui/react';
 
 type UserListProps = {
-  users: User[];
+  users: User[] | null;
 };
 
 const UserList: FC<UserListProps> = ({ users }) => {
