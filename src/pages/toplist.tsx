@@ -25,22 +25,21 @@ const Toplist = () => {
 
   const { user } = useContext(UserContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      console.log(user?.userId);
-      // state movies is undefined if we are not coming from the home page (MVP)
-
-      if (state && state.movies) {
-        setMovies(state.movies);
-        setLoading(false);
-        return;
-      }
-      // if we are coming from the home page (MVP), we fetch the movies from the API
-      setMovies(await getToplist(user?.userId ?? -1));
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+          // state movies is undefined if we are not coming from the home page (MVP)
+          
+          if (state && state.movies) {
+            setMovies(state.movies);
+            setLoading(false);
+            return;
+          }
+          // if we are coming from the home page (MVP), we fetch the movies from the API
+            setMovies(await getToplist(user?.userId ?? -1));
+            setLoading(false);
+        }
+        fetchData();
+    }, []);
 
   const theme = useTheme();
   const scrollbarWidth = theme.space[2];

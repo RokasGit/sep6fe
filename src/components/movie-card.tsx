@@ -104,7 +104,7 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
                     size={'md'}
                     colorScheme="gray"
                     justifySelf={'flex-start'}>
-                    {Type?.charAt(0).toUpperCase()?? 'N' + Type?.slice(1) ?? 'one'}
+                    {Type && Type?.charAt(0).toUpperCase() + Type?.slice(1)}
                   </Tag>
                 </Container>
               </Heading>
