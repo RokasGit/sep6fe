@@ -1,11 +1,11 @@
-import { Movie } from '../types/movie';
+import { Movie } from "../types/movie";
 
 const API_URL = "http://localhost:3000/bestmovies/v1/toplists";
 
 export const addMovieToToplist = async (
   movie: Movie,
   userId: number
-  ): Promise<boolean> => {
+): Promise<boolean> => {
   try {
     const response = await fetch(`${API_URL}/${userId}`, {
       method: "POST",
@@ -14,8 +14,9 @@ export const addMovieToToplist = async (
       },
       body: JSON.stringify(movie),
     });
+    const data = await response.json();
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(data);
     }
     return true;
   } catch (error) {
@@ -27,12 +28,12 @@ export const addMovieToToplist = async (
 export const deleteMovieFromToplist = async (
   movie: Movie,
   userId: number
-  ): Promise<void> => {
+): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/${userId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(movie),
     });
@@ -58,7 +59,7 @@ export const getToplist = async (userId: number): Promise<Movie[]> => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    return data.data;
+    return data;
   } catch (error) {
     console.error(`Error: ${error}`);
     return [];

@@ -1,11 +1,11 @@
-import { Movie } from '../types/movie';
+import { Movie } from "../types/movie";
 
 const API_URL = "http://localhost:3000/bestmovies/v1/watchlists";
 
 export const addMovieToWatchlist = async (
   movie: Movie,
   userId: number
-  ): Promise<boolean> => {
+): Promise<boolean> => {
   try {
     const response = await fetch(`${API_URL}/${userId}`, {
       method: "POST",
@@ -14,35 +14,37 @@ export const addMovieToWatchlist = async (
       },
       body: JSON.stringify(movie),
     });
+    const data = await response.json();
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(data);
     }
     return true;
   } catch (error) {
     console.error(`Error: ${error}`);
-    return false;
+    throw error;
   }
 };
 
 export const deleteMovieFromWatchlist = async (
   movie: Movie,
   userId: number
-  ): Promise<void> => {
+): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/${userId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(movie),
     });
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
     const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data);
+    }
     console.log("Received new data", data);
   } catch (error) {
     console.error(`Error: ${error}`);
+    throw error;
   }
 };
 
@@ -54,13 +56,13 @@ export const getWatchlist = async (userId: number): Promise<Movie[]> => {
         "Content-Type": "application/json",
       },
     });
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
     const data = await response.json();
-    return data.data;
+    if (!response.ok) {
+      throw new Error(data);
+    }
+    return data;
   } catch (error) {
     console.error(`Error: ${error}`);
-    return [];
+    throw error;
   }
 };

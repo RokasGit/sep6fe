@@ -1,14 +1,16 @@
-import { Review } from '../types/review';
-import { API_URL } from '../../external/index';
+import { Review } from "../types/review";
+import { API_URL } from "../../external/index";
 
-const Review_url = API_URL + '/reviews';
+const Review_url = API_URL + "/reviews";
 
-export const getReviewsBasedOnUserId = async (userId: number): Promise<Review[]> => {
+export const getReviewsBasedOnUserId = async (
+  userId: number
+): Promise<Review[]> => {
   try {
     const response = await fetch(`${Review_url}/${userId}}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
     if (!response.ok) {
@@ -16,22 +18,21 @@ export const getReviewsBasedOnUserId = async (userId: number): Promise<Review[]>
     }
     const data = await response.json();
 
-    return data.data;
+    return data;
   } catch (error: any) {
     throw Error(error.message);
   }
-}
+};
 
 export const addReview = async (
   review: Review,
   userId: number
 ): Promise<string> => {
   try {
-
     const response = await fetch(`${Review_url}/${userId}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(review),
     });
@@ -53,12 +54,11 @@ export const deleteReview = async (
   userId: number
 ): Promise<void> => {
   try {
-
     const response = await fetch(`${Review_url}/${userId}/${movieId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {
@@ -73,12 +73,14 @@ export const deleteReview = async (
   }
 };
 
-export const getReviewsBasedOnMovieID = async (movieId: string): Promise<Review[]> => {
+export const getReviewsBasedOnMovieID = async (
+  movieId: string
+): Promise<Review[]> => {
   try {
     const response = await fetch(`${Review_url}/allreviews/${movieId}}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
     if (!response.ok) {
@@ -90,4 +92,4 @@ export const getReviewsBasedOnMovieID = async (movieId: string): Promise<Review[
   } catch (error: any) {
     throw Error(error.message);
   }
-}
+};
