@@ -10,6 +10,7 @@ import Login from './pages/login';
 import Profile from './pages/profile';
 import MoviePage from './pages/movie';
 import Watchlist from './pages/watchlist';
+import ReviewPage from './pages/review';
 
 function App() {
   const { setUser } = useContext(UserContext);
@@ -30,6 +31,7 @@ function App() {
           <Route path="/actors" element={<ActorPage />}></Route>
           <Route path="/watchlist" element={<Watchlist />}></Route>
           <Route path="/movie" element={<MoviePage />}></Route>
+          <Route path="/reviews" element={<ReviewPage />}></Route>
           <Route path="/profile/:id" element={<Profile />}></Route>
         </Route>
         <Route path="/register" element={<Register />}></Route>
