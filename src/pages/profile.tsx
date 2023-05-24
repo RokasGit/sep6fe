@@ -19,6 +19,7 @@ import {
 import { User } from '../types/user';
 import { Toplist } from '../types/toplist';
 import { Watchlist } from '../types/watchlist';
+import { Review } from '../types/review';
   
   // type SocialProfileWithImageProps = {
   //   userId: number;
@@ -32,6 +33,7 @@ import { Watchlist } from '../types/watchlist';
     const [user, setUser] = useState<User>();
     const [toplist, setToplist] = useState<Toplist>();
     const [watchlist, setWatchlist] = useState<Watchlist>();
+    const [reviews, setReviews] = useState<Review[]>();
     const navigate = useNavigate();
     useEffect(() => {
       const fetchData = async () => {
@@ -43,6 +45,7 @@ import { Watchlist } from '../types/watchlist';
         setUser(response.user);
         setToplist(response.toplist);
         setWatchlist(response.watchlist);
+        setReviews(response.reviews);
         setLoading(false);      
       }).catch((error) => {
         console.log(error);
@@ -70,7 +73,7 @@ import { Watchlist } from '../types/watchlist';
     };
     const handleReviews = async () => {
       try {
-        navigate('/reviews');
+        navigate('/reviews', {state: {reviews: reviews }});
       }catch(error) {
         console.log(error);
       }
@@ -118,7 +121,7 @@ import { Watchlist } from '../types/watchlist';
   
             <Stack direction={'row'} justify={'center'} spacing={6}>
               <Stack spacing={0} align={'center'}>
-                <Text fontWeight={600}>0</Text>
+                <Text fontWeight={600}>{reviews?.length ?? 0}</Text>
                 <Text fontSize={'sm'} color={'gray.500'}>
                   Reviews
                 </Text>

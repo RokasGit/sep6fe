@@ -1,8 +1,9 @@
-import { User } from '../types/user';
-import { Toplist } from '../types/toplist';
-import { Watchlist } from '../types/watchlist';
+import { User } from "../types/user";
+import { Toplist } from "../types/toplist";
+import { Watchlist } from "../types/watchlist";
+import { Review } from "../types/review";
 
-const API_URL = 'http://localhost:3000/bestmovies/v1/users';
+const API_URL = "http://localhost:3000/bestmovies/v1/users";
 
 export default class UserRequests {
   static async registerUser(
@@ -17,9 +18,9 @@ export default class UserRequests {
         password: password,
       };
       const response = await fetch(`${API_URL}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
 
         body: JSON.stringify(user),
@@ -42,9 +43,9 @@ export default class UserRequests {
         password: password,
       };
       const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
 
         body: JSON.stringify(user),
@@ -61,12 +62,17 @@ export default class UserRequests {
   }
   static async getUserProfile(
     id: number
-  ): Promise<{ user: User; toplist: Toplist; watchlist: Watchlist }> {
+  ): Promise<{
+    user: User;
+    toplist: Toplist;
+    watchlist: Watchlist;
+    reviews: Review[];
+  }> {
     try {
       const response = await fetch(`${API_URL}/profile/${id}`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
       const data = await response.json();
@@ -83,9 +89,9 @@ export default class UserRequests {
   static async getUsers(): Promise<User[]> {
     try {
       const response = await fetch(`${API_URL}/all-users/`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
       const data = await response.json();

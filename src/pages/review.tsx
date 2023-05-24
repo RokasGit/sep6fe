@@ -15,8 +15,12 @@ import { UserContext } from '../context/user.context';
 import { Review } from '../types/review';
 import { getReviewsBasedOnUserId } from '../requests/review.requests';
 import { ReviewCard } from '../components/review-popUp';
+import { useLocation } from 'react-router-dom';
 
 const ReviewList = () => {
+    const location = useLocation();
+    const state = location.state;
+
     const [loading, setLoading] = useState(true);
 
     const [reviews, setReviews] = useState<Review[] | null>(null);
@@ -25,6 +29,11 @@ const ReviewList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (state && state.reviews) {
+                setReviews(state.reviews);
+                setLoading(false);
+                return;
+              }
             if (user?.userId) {
                 setReviews(await getReviewsBasedOnUserId(user?.userId));
                 setLoading(false);
