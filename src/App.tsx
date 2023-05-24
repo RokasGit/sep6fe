@@ -31,7 +31,7 @@ function App() {
           <Route path="/actors" element={<ActorPage />}></Route>
           <Route path="/watchlist" element={<Watchlist />}></Route>
           <Route path="/movie" element={<MoviePage />}></Route>
-          <Route path="/reviews" element={<ReviewPage></ReviewPage>}></Route>
+          <Route path="/reviews" element={<ReviewPage />}></Route>
           <Route path="/profile/:id" element={<Profile />}></Route>
         </Route>
         <Route path="/register" element={<Register />}></Route>
