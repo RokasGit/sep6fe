@@ -50,6 +50,16 @@ const RateMovie: React.FC<RateMovieProps> = ({ movie, userId }) => {
 
   const handleSubmit = async () => {
 
+    if (rating === 0) {
+      alert("Rating can't be zero!");
+      return;
+    }
+  
+    if (comment === "" || comment.length > 500) {
+      alert("Comment can't be empty or more than 500 characters!");
+      return;
+    }
+
     const reviewToSend: Review = {
       userId: userId,
       movieId: movie.imdbID,

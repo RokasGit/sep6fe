@@ -7,6 +7,8 @@ import {
     SimpleGrid,
     useTheme,
     Input,
+    Heading,
+    Box
 } from '@chakra-ui/react';
 
 import { UserContext } from '../context/user.context';
@@ -35,19 +37,22 @@ const ReviewList = () => {
     const scrollbarWidth = theme.space[2];
 
     return (
-        <Center overflowY="hidden" h="93vh" w="100vw" sx={{ scrollbarWidth }}>
-            {loading ? (
-                <Spinner size="xl" />
-            ) : (
-                <Flex direction="column" overflowY="auto" h="inherit" w="inherit" width={'80%'}>
-                    <SimpleGrid columns={[1, 2, 3, 4]} spacing={10}>
-                        {reviews && reviews.map((review) => (
-                            <ReviewCard key={review.movieId} review={review} />
-                        ))}
-                    </SimpleGrid>
-                </Flex>
-            )}
-        </Center>
+        <Box>
+            <Heading size="lg" textAlign={"center"} mt={5}>Reviews</Heading>
+            <Center overflowY="hidden" h="93vh" w="100vw" mt={5} sx={{ scrollbarWidth }}>
+                {loading ? (
+                    <Spinner size="xl" />
+                ) : (
+                    <Flex direction="column" overflowY="auto" h="inherit" w="inherit" width={'80%'}>
+                        <SimpleGrid columns={[1, 2, 3, 4]} spacing={10}>
+                            {reviews && reviews.map((review) => (
+                                <ReviewCard key={review.movieId} review={review} />
+                            ))}
+                        </SimpleGrid>
+                    </Flex>
+                )}
+            </Center>
+        </Box>
     )
 }  
 
