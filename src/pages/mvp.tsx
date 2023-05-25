@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useContext } from 'react';
+import { useState, ChangeEvent, useContext } from "react";
 
 import {
   Box,
@@ -16,39 +16,43 @@ import {
   SimpleGrid,
   Spinner,
   useTheme,
-  Select
-} from '@chakra-ui/react';
+  Select,
+} from "@chakra-ui/react";
 
-import { Movie } from '../types/movie';
-import { getMoviesByTitle } from '../requests/movie.requests';
+import { Movie } from "../types/movie";
+import { getMoviesByTitle } from "../requests/movie.requests";
 
-import MovieCard from '../components/movie-card';
-import { Actor } from '../types/actor';
-import { MovieStatList } from '../components/actor-stat';
-import { MovieStat } from '../components/actor-stat';
-import { getActorByName } from '../requests/actor.requests';
-import { UserContext } from '../context/user.context';
-import UserRequests from '../requests/user.requests';
-import { User } from '../types/user';
-import UserList from '../components/user-list';
+import MovieCard from "../components/movie-card";
+import { Actor } from "../types/actor";
+import { MovieStatList } from "../components/actor-stat";
+import { MovieStat } from "../components/actor-stat";
+import { getActorByName } from "../requests/actor.requests";
+import { UserContext } from "../context/user.context";
+import UserRequests from "../requests/user.requests";
+import { User } from "../types/user";
+import UserList from "../components/user-list";
 
 const Mvp = () => {
-  const [Title, setTitle] = useState('');
+  const [Title, setTitle] = useState("");
   const [movies, setMovies] = useState<Movie[] | null>([]);
   const [actors, setActor] = useState<Actor[] | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchType, setSearchType] = useState<'Movies' | 'Actors' | 'Users'>('Movies');
+  const [searchType, setSearchType] = useState<"Movies" | "Actors" | "Users">(
+    "Movies"
+  );
 
-  const{ user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchType(event.target.value as 'Movies' | 'Actors' | 'Users');
+  const handleSearchTypeChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSearchType(event.target.value as "Movies" | "Actors" | "Users");
   };
 
   const handleSearch = async () => {
@@ -57,18 +61,19 @@ const Mvp = () => {
     setIsLoading(true);
 
     try {
-
-      if (searchType === 'Movies') {
-        const movies: Movie[] = await getMoviesByTitle(Title, user?.userId ?? -1);
+      if (searchType === "Movies") {
+        const movies: Movie[] = await getMoviesByTitle(
+          Title,
+          user?.userId ?? -1
+        );
         setMovies(movies);
-      } else  if(searchType === 'Actors'){
+      } else if (searchType === "Actors") {
         const actors: Actor[] = await getActorByName(Title);
         setActor(actors);
-      }
-      else{
+      } else {
         const users = await UserRequests.getUsers();
         setUsers(users);
-        if (Title === '') {
+        if (Title === "") {
           setFilteredUsers([]);
           return;
         }
@@ -79,25 +84,34 @@ const Mvp = () => {
         );
         setFilteredUsers(filteredUsers);
       }
-
     } catch (error) {
       console.log(error);
     }
-    
-    setTitle('');
+
+    setTitle("");
     setIsLoading(false);
   };
 
   const renderSearchResults = () => {
     switch (searchType) {
-      case 'Movies':
+      case "Movies":
         if (movies && movies.length > 0) {
           return (
-            <Center overflowY="hidden" h="52vh" w="99vw" sx={{ scrollbarWidth }}>
+            <Center
+              overflowY="hidden"
+              h="52vh"
+              w="99vw"
+              sx={{ scrollbarWidth }}
+            >
               {isLoading ? (
                 <Spinner size="xl" />
               ) : (
-                <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
+                <Flex
+                  direction="column"
+                  overflowY="scroll"
+                  h="inherit"
+                  w="inherit"
+                >
                   <SimpleGrid columns={[1, 2, 3]} spacing={10}>
                     {movies.map((movie) => (
                       <MovieCard key={movie.imdbID} movie={movie} />
@@ -110,14 +124,24 @@ const Mvp = () => {
         } else {
           return <Box></Box>;
         }
-      case 'Actors':
+      case "Actors":
         if (actors && actors.length > 0) {
           return (
-            <Center overflowY="hidden" h="52vh" w="99vw" sx={{ scrollbarWidth }}>
+            <Center
+              overflowY="hidden"
+              h="52vh"
+              w="99vw"
+              sx={{ scrollbarWidth }}
+            >
               {isLoading ? (
                 <Spinner size="xl" />
               ) : (
-                <Flex direction="column" overflowY="scroll" h="inherit" w="inherit">
+                <Flex
+                  direction="column"
+                  overflowY="scroll"
+                  h="inherit"
+                  w="inherit"
+                >
                   <SimpleGrid columns={[1, 2, 3, 4]} spacing={5}>
                     {actors.map((actor) => (
                       <MovieStat key={actor.ID} actor={actor} spacing={4} />
@@ -131,44 +155,48 @@ const Mvp = () => {
           return <Box></Box>;
         }
       default:
-        return (
-          <UserList users={filteredUsers} />
-        );
+        return <UserList users={filteredUsers} />;
     }
   };
-  
+
   const theme = useTheme();
   const scrollbarWidth = theme.space[2];
 
   return (
     <>
-      <Container maxW={'10xl'}>
+      <Container maxW={"10xl"}>
         <Stack
           as={Box}
-          textAlign={'center'}
+          textAlign={"center"}
           spacing={{ base: 8, md: 14 }}
-          py={{ base: 16, md: 30 }}>
+          py={{ base: 16, md: 30 }}
+        >
           <Heading
             fontWeight={600}
-            fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
-            lineHeight={'110%'}>
-            This is the SEP6 <br />
-            <Text as={'span'} color={'green.400'}>
-              MVP
+            fontSize={{ base: "2xl", sm: "4xl", md: "6xl" }}
+            lineHeight={"110%"}
+          >
+            Welcome to <br />
+            <Text as={"span"} color={"green.400"}>
+              Best Movies
             </Text>
           </Heading>
           <Stack
-            direction={'column'}
+            direction={"column"}
             spacing={10}
-            align={'center'}
-            alignSelf={'center'}
-            position={'relative'}>
-            <Stack direction={'row'} spacing={3} w="100%">
-
-              <Select onChange={handleSearchTypeChange} value={searchType} width="50%">
-                <option value='Movies'>Movies</option>
-                <option value='Actors'>Actors</option>
-                <option value='Users'>Users</option>
+            align={"center"}
+            alignSelf={"center"}
+            position={"relative"}
+          >
+            <Stack direction={"row"} spacing={3} w="100%">
+              <Select
+                onChange={handleSearchTypeChange}
+                value={searchType}
+                width="50%"
+              >
+                <option value="Movies">Movies</option>
+                <option value="Actors">Actors</option>
+                <option value="Users">Users</option>
               </Select>
 
               <Input
@@ -177,51 +205,50 @@ const Mvp = () => {
                 value={Title}
               />
               <Button
-                colorScheme={'green'}
-                bg={'green.400'}
+                colorScheme={"green"}
+                bg={"green.400"}
                 px={8}
                 py={2}
                 _hover={{
-                  bg: 'green.500',
+                  bg: "green.500",
                 }}
                 onClick={handleSearch}
                 isLoading={isLoading}
               >
                 Search
               </Button>
-
             </Stack>
             <Box>
               <Icon
                 as={Arrow}
-                color={useColorModeValue('gray.800', 'gray.300')}
+                color={useColorModeValue("gray.800", "gray.300")}
                 w={71}
-                position={'absolute'}
+                position={"absolute"}
                 right={-71}
-                top={'10px'}
+                top={"10px"}
               />
               <Text
-                fontSize={'lg'}
-                fontFamily={'Caveat'}
-                position={'absolute'}
-                right={'-125px'}
-                top={'-15px'}
-                transform={'rotate(10deg)'}>
+                fontSize={"lg"}
+                fontFamily={"Caveat"}
+                position={"absolute"}
+                right={"-125px"}
+                top={"-15px"}
+                transform={"rotate(10deg)"}
+              >
                 Click me xD
               </Text>
             </Box>
           </Stack>
-                {renderSearchResults()}
+          {renderSearchResults()}
         </Stack>
       </Container>
     </>
   );
 };
 
-
 const Arrow = createIcon({
-  displayName: 'Arrow',
-  viewBox: '0 0 72 24',
+  displayName: "Arrow",
+  viewBox: "0 0 72 24",
   path: (
     <path
       fillRule="evenodd"

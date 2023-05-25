@@ -60,9 +60,7 @@ export default class UserRequests {
       throw Error(error.message);
     }
   }
-  static async getUserProfile(
-    id: number
-  ): Promise<{
+  static async getUserProfile(id: number): Promise<{
     user: User;
     toplist: Toplist;
     watchlist: Watchlist;
@@ -89,6 +87,25 @@ export default class UserRequests {
   static async getUsers(): Promise<User[]> {
     try {
       const response = await fetch(`${API_URL}/all-users/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data);
+      }
+
+      return data;
+    } catch (error: any) {
+      throw Error(error.message);
+    }
+  }
+
+  static async getUserById(id: number): Promise<User> {
+    try {
+      const response = await fetch(`${API_URL}/all-users/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
