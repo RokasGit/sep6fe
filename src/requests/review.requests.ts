@@ -77,7 +77,7 @@ export const getReviewsBasedOnMovieID = async (
   movieId: string
 ): Promise<Review[]> => {
   try {
-    const response = await fetch(`${Review_url}/allreviews/${movieId}}`, {
+    const response = await fetch(`${Review_url}/allreviews/${movieId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export const getReviewsBasedOnMovieID = async (
     }
     const data = await response.json();
 
-    return data.data;
+    return data;
   } catch (error: any) {
     throw Error(error.message);
   }
