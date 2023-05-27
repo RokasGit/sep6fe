@@ -2,6 +2,7 @@ version: '1'
 services:
   app:
     image: best-movies-app
+    platform: linux/amd64
     build: .
     networks:
       - backend

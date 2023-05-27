@@ -1,8 +1,12 @@
-import { Movie } from '../types/movie';
+import { Movie } from "../types/movie";
 
-const API_URL = 'http://localhost:3000/bestmovies/v1/movies';
+const API_URL =
+  "https://best-movies-api-cmhx6fsh4a-ew.a.run.app/bestmovies/v1/movies";
 
-export const getMoviesByTitle = async (title: string, userID: Number): Promise<Movie[]> => {
+export const getMoviesByTitle = async (
+  title: string,
+  userID: Number
+): Promise<Movie[]> => {
   return await fetch(`${API_URL}/title/${title}/${userID}`)
     .then((response) => response.json())
     .then((res) => {
@@ -13,7 +17,10 @@ export const getMoviesByTitle = async (title: string, userID: Number): Promise<M
     });
 };
 
-export const getMovieById = async (id: string, userID: Number): Promise<Movie> => {
+export const getMovieById = async (
+  id: string,
+  userID: Number
+): Promise<Movie> => {
   return await fetch(`${API_URL}/id/${id}/${userID}`)
     .then((response) => response.json())
     .then((res) => {
@@ -23,5 +30,3 @@ export const getMovieById = async (id: string, userID: Number): Promise<Movie> =
       throw Error(err);
     });
 };
-
-

@@ -3,7 +3,8 @@ import { Toplist } from "../types/toplist";
 import { Watchlist } from "../types/watchlist";
 import { Review } from "../types/review";
 
-const API_URL = "http://localhost:3000/bestmovies/v1/users";
+const API_URL =
+  "https://best-movies-api-cmhx6fsh4a-ew.a.run.app/bestmovies/v1/users";
 
 export default class UserRequests {
   static async registerUser(
