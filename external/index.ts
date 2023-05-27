@@ -1,2 +1,2 @@
-export const API_URL = 'http://localhost:3000/bestmovies/v1';
-
+export const API_URL =
+  "https://best-movies-api-cmhx6fsh4a-ew.a.run.app/bestmovies/v1";
