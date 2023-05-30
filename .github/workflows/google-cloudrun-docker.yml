@@ -49,7 +49,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.PROJECT_ID}} # Google Cloud project id
   GAR_LOCATION: europe # Artifact Registry location
-  GAR_REPOSITORY: eu.gcr.io
+  GAR_REPOSITORY: eu.gcr.io # Artifact Registry repository name
   SERVICE: best-movies-app # Cloud Run service name
   REGION: europe-west1 # Cloud Run service region
 
